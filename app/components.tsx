@@ -189,8 +189,15 @@ export function MetaTags(props) {
       <meta name="description" content={props.description} />
       <meta property="og:title" content={props.title} />
       <meta property="og:description" content={props.description} />
+      <meta property="og:image" content="/large.png" />
+      <meta property="og:image:alt" content="matrix" />
+      <meta property="og:image:width" content="1824" />
+      <meta property="og:image:height" content="1004" />
       <meta name="twitter:title" content={props.title} />
       <meta name="twitter:description" content={props.description} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:image" content="/large.png" />
+      <meta name="twitter:image:alt" content="matrix." />
     </React.Fragment>
   )
 }

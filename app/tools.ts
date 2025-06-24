@@ -22,7 +22,7 @@ export async function getDirectoryContents(path) {
 export async function getFileContents(path) {
   const owner = "tb-dhk";
   const repo = "matrix-vault";
-  const token = process.env.VITE_GITHUB_TOKEN;  // keep this secret!
+  const token = import.meta.env.VITE_GITHUB_TOKEN;  // keep this secret!
   
   const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 

@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router';
 import { useState, useEffect } from "react";
 import { getDirectoryContents, getBuildJSON, getConfigJSON, seriesLastUpdated, parent } from "./tools";
-import { Navbar, Tag, Tree, Series } from "./components";
+import { Navbar, Tag, Tree, Series, MetaTags } from "./components";
 
 export default function MyRouteComponent() {
   const navigate = useNavigate();
@@ -39,6 +39,7 @@ export default function MyRouteComponent() {
   return (
     <div className="head">
       <Navbar />
+      <MetaTags title={path} description="explore directory" />
       <div className="body">
         {directory && <Tree path={path} />}
         <div className="browse">

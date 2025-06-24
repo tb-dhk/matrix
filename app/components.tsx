@@ -1,5 +1,5 @@
 import { textToColor, getBuildJSON, getConfigJSON, getDirectoryContents, parent } from "./tools"
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router"
 
 export function Tag (props) {
@@ -180,4 +180,17 @@ export function SearchBar() {
       />
     </form>
   );
+}
+
+export function MetaTags(props) {
+  return (
+    <React.Fragment>
+      <title>{props.title}</title>
+      <meta name="description" content={props.description} />
+      <meta property="og:title" content={props.title} />
+      <meta property="og:description" content={props.description} />
+      <meta name="twitter:title" content={props.title} />
+      <meta name="twitter:description" content={props.description} />
+    </React.Fragment>
+  )
 }

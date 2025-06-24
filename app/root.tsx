@@ -27,8 +27,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charset="utf-8" />
+        <link rel="icon" href="square.png" type="image/png" />
+
+        <meta property="og:image" content="large.png" />
+        <meta property="og:image:alt" content="matrix" />
+        <meta property="og:image:width" content="1824" />
+        <meta property="og:image:height" content="1004" />
+        
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="large.png" />
+        <meta name="twitter:image:alt" content="matrix." />
         <Meta />
         <Links />
       </head>

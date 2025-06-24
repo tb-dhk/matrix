@@ -4,7 +4,7 @@ import remarkFrontmatter from 'remark-frontmatter'
 import { useNavigate } from 'react-router'
 import { useState, useEffect } from "react";
 import { getBuildJSON } from "./tools"
-import { Navbar, Tag, Tags } from "./components"
+import { Navbar, Tag, Tags, MetaTags } from "./components"
 
 export default function MyRouteComponent({ params }) {
   const [content, setContent] = useState(null);
@@ -20,6 +20,7 @@ export default function MyRouteComponent({ params }) {
 
   return (
     <div className="head">
+      <MetaTags title={`tag "${params["*"]}"`} description={`posts with tag "${params["*"]}"`} />
       <Navbar />
       <div className="body">
         <Tags />

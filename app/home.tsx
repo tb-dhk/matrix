@@ -5,7 +5,7 @@ import {
   pathInSeries, parent,
   seriesLastUpdated, wordFromSecond
 } from "./tools"
-import { Tag, Navbar } from "./components"
+import { Tag, Navbar, MetaTags } from "./components"
 
 export default function MyRouteComponent() {  
   const [content, setContent] = useState({
@@ -80,6 +80,7 @@ export default function MyRouteComponent() {
 
   return (
     <div className="head">
+      <MetaTags title="matrix" description="welcome to the matrix." />
       <Navbar />
       <div className="home">
         <div className="title">welcome to the <span className="highlight">{wordFromSecond(timePassed, 6000)}</span>.</div> 

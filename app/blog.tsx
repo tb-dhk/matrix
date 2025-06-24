@@ -3,7 +3,7 @@ import remarkFrontmatter from 'remark-frontmatter'
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router"
 import { getFileContents, getConfigJSON, parent, getFrontMatter } from "./tools"
-import { Navbar, Tag, Tree, Series } from "./components"
+import { Navbar, Tag, Tree, Series, MetaTags } from "./components"
 
 function ColoredMarkdown(props) {
   return (
@@ -62,12 +62,14 @@ export default function MyRouteComponent({ params }) {
 
   return (
     <div className="head">
+      <MetaTags title={frontMatter.title} description={frontMatter.description} />
       <Navbar />
       <div className="body">
         <Tree path={parent(path)} current={name} />
         <div className="post">
           <div className="post-header">
             <div className="title">{frontMatter.title}</div>
+            <div className="description">{frontMatter.description}</div>
             <div className="metadata">
               {(configData && (parent(path) in configData.series)) && (
                 <React.Fragment>

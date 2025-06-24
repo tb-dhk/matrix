@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router";
 import { useState, useEffect } from "react";
 import { getBuildJSON } from "./tools"
-import { Navbar, Tag } from "./components"
+import { Navbar, Tag, MetaTags } from "./components"
 
 export default function SearchPage({ params }) {
   const navigate = useNavigate();
@@ -27,6 +27,7 @@ export default function SearchPage({ params }) {
 
   return (
     <div className="head">
+      <MetaTags title={query} description={`search results for "${query}"`} />
       <Navbar />
       <div className="body">
         <div className="browse">

@@ -25,11 +25,8 @@ async function fetchGithubFile(filePath) {
 }
 
 export async function getFileContents(path) {
-  console.log(path)
-
   // step 1: get the timestamp from github
   const timestamp = (await fetchGithubFile('timestamp.txt')).trim();
-  console.log(timestamp)
 
   // normalize path and insert timestamp before extension
   const ext = path.endsWith('.json') ? '.json' : '.md';
@@ -50,7 +47,6 @@ export async function getFileContents(path) {
 }
 
 export async function getBuildJSON() {
-  console.log("getting build")
   const json = await getFileContents("build.json")
   return JSON.parse(json)
 }

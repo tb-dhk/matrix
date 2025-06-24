@@ -29,21 +29,32 @@ function ColoredMarkdown(props) {
 export default function MyRouteComponent({ params }) {
   const [content, setContent] = useState("")
   const [frontMatter, setFrontMatter] = useState({})
-  const [directory, setDirectory] = useState({})
   const [configData, setConfigData] = useState(null)
 
   const navigate = useNavigate()
 
   useEffect(() => {
     getFileContents("vault/" + params["*"])
-      .then(content => {
-        setContent(content)
-        setFrontMatter(matter(content).data)
+      .then(newContent => {
+        setContent(newContent);
+        setFrontMatter(matter(newContent).data);
       })
-      .catch(() => navigate("/blog/404"));
+      .catch((err) => {
+        console.error(err);
 
-    getDirectoryContents("vault/" + parent(params["*"]))
-      .then(content => setDirectory(content))
+        // example of checking error message or status
+        if (
+          err.message.includes('Failed to fetch') || // fetch failed, possibly 404
+          err.message.includes('404') // or explicit 404
+        ) {
+          if (location.pathname !== '/blog/404') {
+            navigate('/blog/404');
+          }
+        } else {
+          // other errors: show message, or set some error state
+          console.error(err.message || 'Unexpected error');
+        }
+      });
 
     getConfigJSON()
       .then(data => setConfigData(data))
@@ -72,7 +83,7 @@ export default function MyRouteComponent({ params }) {
                   · 
                 </React.Fragment>
               )}
-              <div>{strftime("%Y-%m-%d", frontMatter?.date ?? new Date(2008, 1, 15, 0, 0, 0))}</div> 
+              <div>{strftime("%Y-%m-%d", frontMatter?.date ?? new Date(2008, 0, 15, 0, 0, 0))}</div> 
               · 
               <div className="tags">{frontMatter?.tags?.map(tag => <Tag name={tag} />)}</div>
             </div>

@@ -62,7 +62,7 @@ export default function MyRouteComponent({ params }) {
 
   return (
     <div className="head">
-      <MetaTags title={frontMatter.title} description={frontMatter.description} />
+      <MetaTags title="matrix" description={path} />
       <Navbar />
       <div className="body">
         <Tree path={parent(path)} current={name} />

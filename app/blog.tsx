@@ -71,7 +71,7 @@ export default function MyRouteComponent({ params }) {
             <div className="title">{frontMatter.title}</div>
             <div className="description">{frontMatter.description}</div>
             <div className="metadata">
-              <div>{name}</div> 
+              <div>{params["*"]}</div> 
               ·
               {(configData && (parent(path) in configData.series)) && (
                 <React.Fragment>

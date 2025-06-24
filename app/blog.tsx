@@ -71,8 +71,6 @@ export default function MyRouteComponent({ params }) {
             <div className="title">{frontMatter.title}</div>
             <div className="description">{frontMatter.description}</div>
             <div className="metadata">
-              <div>{params["*"]}</div> 
-              ·
               {(configData && (parent(path) in configData.series)) && (
                 <React.Fragment>
                   <div>
@@ -87,6 +85,8 @@ export default function MyRouteComponent({ params }) {
               <div>{frontMatter.date}</div> 
               · 
               <div className="tags">{frontMatter?.tags?.map(tag => <Tag name={tag} />)}</div>
+              ·
+              <div>{params["*"]}</div> 
             </div>
           </div>
           <div className="content">

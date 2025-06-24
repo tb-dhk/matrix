@@ -15,11 +15,11 @@ body {
   font-size: 20px;
 }
 
-.highlight {
+a, .highlight {
   color: #8ccdf2
 }
 
-.highlight2 {
+a:visited, .highlight2 {
   color: #b28cf2
 }
 

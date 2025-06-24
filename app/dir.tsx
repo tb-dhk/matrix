@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router';
-import React, { useState, useEffect } from "react";
-import { getDirectoryContents, getBuildJSON, getConfigJSON } from "./tools";
+import { useState, useEffect } from "react";
+import { getDirectoryContents, getBuildJSON, getConfigJSON, seriesLastUpdated, parent } from "./tools";
 import { Navbar, Tag, Tree, Series } from "./components";
 
 export default function MyRouteComponent() {
@@ -16,7 +16,7 @@ export default function MyRouteComponent() {
   useEffect(() => {
 
     Promise.all([
-      getDirectoryContents("vault" + path),
+      getDirectoryContents(path),
       getBuildJSON(),
       getConfigJSON(),
     ])
@@ -40,13 +40,20 @@ export default function MyRouteComponent() {
     <div className="head">
       <Navbar />
       <div className="body">
-        {directory && <Tree directory={directory} path={path} />}
+        {directory && <Tree path={path} />}
         <div className="browse">
           <div className="list-header">
             {isSeries ? (
               <>
                 <div className="title">{config.series[path]?.name}</div>
                 <div className="description">{config.series[path]?.description}</div>
+                <div>last updated: {
+                  seriesLastUpdated(
+                    Object.entries(files)
+                      .filter(([id, obj]) => parent(id) === path)
+                      .map(i => i[1])
+                  ) || "never"
+                }</div>
               </>
             ) : (
               <div className="title">{path}</div>

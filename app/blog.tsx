@@ -19,6 +19,7 @@ function ColoredMarkdown(props) {
           <em style={{ color: '#b28cf2' }} {...props} />
         ),
       }}
+      remarkPlugins={[remarkFrontmatter]}
     >
       {props.children}
     </ReactMarkdown>
@@ -31,13 +32,15 @@ export default function MyRouteComponent({ params }) {
   const [directory, setDirectory] = useState({})
   const [configData, setConfigData] = useState(null)
 
+  const navigate = useNavigate()
+
   useEffect(() => {
-    getFileContents("vault/" + params["*"] + ".md")
+    getFileContents("vault/" + params["*"])
       .then(content => {
         setContent(content)
         setFrontMatter(matter(content).data)
       })
-      .catch(err => console.error(err));
+      .catch(() => navigate("/blog/404"));
 
     getDirectoryContents("vault/" + parent(params["*"]))
       .then(content => setDirectory(content))
@@ -48,13 +51,12 @@ export default function MyRouteComponent({ params }) {
 
   const path = "/" + params["*"]
   const name = params["*"].split("/").pop();
-  const navigate = useNavigate()
 
   return (
     <div className="head">
       <Navbar />
       <div className="body">
-        <Tree directory={directory} path={parent(path)} current={name} />
+        <Tree path={parent(path)} current={name} />
         <div className="post">
           <div className="post-header">
             <div className="title">{frontMatter.title}</div>
@@ -76,9 +78,9 @@ export default function MyRouteComponent({ params }) {
             </div>
           </div>
           <div className="content">
-            <ReactMarkdown remarkPlugins={[remarkFrontmatter]}>
+            <ColoredMarkdown remarkPlugins={[remarkFrontmatter]}>
               {content} 
-            </ReactMarkdown>
+            </ColoredMarkdown>
           </div>
         </div>
         <Series path={parent(path)} current={name} />

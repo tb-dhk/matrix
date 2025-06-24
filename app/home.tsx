@@ -2,9 +2,8 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router";
 import { 
   getBuildJSON, getConfigJSON, 
-  pickRandom, weightedPickList,
   pathInSeries, parent,
-  seriesLastUpdated
+  seriesLastUpdated, wordFromSecond
 } from "./tools"
 import { Tag, Navbar } from "./components"
 
@@ -23,6 +22,21 @@ export default function MyRouteComponent() {
   
   let navigate = useNavigate()
 
+  const [startTime, setStartTime] = useState(null);
+  const [timePassed, setTimePassed] = useState(0);
+
+  useEffect(() => {
+    if (!startTime) {
+      setStartTime(Date.now());
+    }
+
+    const intervalId = setInterval(() => {
+      setTimePassed(Date.now() - startTime);
+    }, 16) // roughly 60fps update
+
+    return () => clearInterval(intervalId);
+  }, [startTime]);
+
   useEffect(() => {
     Promise.all([getBuildJSON(), getConfigJSON()])
       .then(([buildData, configData]) => {
@@ -30,7 +44,9 @@ export default function MyRouteComponent() {
         setConfig(configData)
 
         const pinned = Object.fromEntries(
-          configData.pinned.map(path => [path, buildData[path]])
+          configData.pinned
+            .map(path => [path, buildData[path]])
+            .filter(i => i[1])
         )
 
         // handle buildData
@@ -66,7 +82,7 @@ export default function MyRouteComponent() {
     <div className="head">
       <Navbar />
       <div className="home">
-        <div className="title">welcome to the <span className="highlight">matrix</span>.</div> 
+        <div className="title">welcome to the <span className="highlight">{wordFromSecond(timePassed, 6000)}</span>.</div> 
         <div>
           <div className="label">pinned</div>
           <div className="cards" id="pinned">
@@ -109,12 +125,12 @@ export default function MyRouteComponent() {
                 <div className="card-title">{obj.name}</div>
                 <div>{obj.description}</div>
                 <div>
-                  last updated {
+                  last updated: {
                     seriesLastUpdated(
                       Object.entries(build)
                         .filter(([id, obj]) => parent(id) === i)
                         .map(i => i[1])
-                    )
+                    ) || "never"
                   }
                 </div>
               </div>

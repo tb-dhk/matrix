@@ -16,27 +16,47 @@ export function Tag (props) {
   >{props.name}</div>
 }
 
-export function Tree (props) {
+export function Tree(props) {
   const navigate = useNavigate()
 
-  let list = Object.values(props.directory)
-  if (props.path !== "/") {
-    list = [{name: "..", type: "dir"}, ...list]
+  const [contents, setContents] = useState([])
+
+  let path = props.path
+  if (!path.startsWith("/")) {
+    path = "/" + path
   }
+  if (!path.endsWith("/")) {
+    path = path + "/"
+  }
+
+  useEffect(() => {
+    getDirectoryContents(props.path)
+      .then(data => {
+        setContents(data.sort((a, b) => a.name - b.name))
+        if (path !== "/") {
+          setContents(prev => [{name: "..", type: "folder"}, ...prev])
+        }
+      })
+  }, [props.path])
 
   return (
     <div className="left tree">
-      <div className="highlight">{props.path || "/"}</div>
-      {props.directory && list.map((i, idx) => {
-        const branch = list.length - 1 === idx ? "└──" : "├──"
-        let url = "/" + (i.type === "dir" ? "dir" : "blog") + (props.path === "/" ? "" : props.path) + "/" + i.name.replace(".md", "")
+      <div 
+        className="highlight"
+        onClick={() => navigate("/dir" + path)}
+      >{props.path || "/"}</div>
+      {contents && contents.map((i, idx) => {
+        const branch = contents.length - 1 === idx ? "└──" : "├──"
+        let url = "/" + (i.type === "folder" ? "dir" : "blog") + path + i.name
         if (i.name === "..") {
           url = "/dir" + parent(props.path)
         }
         return (
           <div onClick={() => navigate(url)}>
             {branch + " "} 
-            <span className={`${i.type === "dir" ? "highlight" : ""} ${i.name.replace(".md", "") === props.current ? "highlight2" : ""}`}>
+            <span 
+              className={`${i.type === "folder" ? "highlight" : ""} ${i.name.replace(".md", "") === props.current ? "highlight2" : ""}`}
+            >
               {i.name}
             </span>
           </div>
@@ -135,9 +155,10 @@ export function SearchBar() {
       if (item) {
         navigate("/blog" + query);
       } else {
-        // not a file — check if directory
-        const directoryData = await getDirectoryContents("vault" + query);
-        if (!Object.keys(directoryData).includes("message")) {
+        let dirPath = query.endsWith("/") ? query : query + "/";
+        const hasDirectory = Object.keys(buildData).some(key => key.startsWith(dirPath));
+
+        if (hasDirectory) {
           navigate("/dir" + query);
         } else {
           navigate("/blog/404");

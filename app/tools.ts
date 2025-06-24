@@ -1,7 +1,5 @@
-import matter from 'gray-matter';
 import SHA256 from "crypto-js/sha256";
-import { put, list, del } from '@vercel/blob';
-import { config } from 'dotenv'
+import YAML from 'yaml';
 
 const VERCEL_BLOB_BASE_URL = "https://uobd8cw20y5uorxw.public.blob.vercel-storage.com";
 
@@ -110,14 +108,19 @@ export async function getDirectoryContents(directoryPath = '/') {
   return entries;
 }
 
-export async function getFrontMatter(path) {
-  const fileContents = await getFileContents(path)
+export function getFrontMatter(markdown) {
+  const FRONTMATTER_REGEX = /^---\n([\s\S]*?)\n---\n?/;
 
-  if (!fileContents) {
-    throw new Error(`GitHub API error: ${response.status}`);
+  const match = markdown.match(FRONTMATTER_REGEX);
+
+  if (!match) {
+    return { data: {}, content: markdown };
   }
 
-  return matter(fileContents).data
+  const rawFrontmatter = match[1];
+  const data = YAML.parse(rawFrontmatter);
+
+  return data;
 }
 
 export function pickRandom(arr, n) {

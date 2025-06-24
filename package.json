@@ -14,14 +14,14 @@
     "@vercel/blob": "^1.1.1",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.5.0",
-    "gray-matter": "^4.0.3",
     "isbot": "^5.1.27",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-markdown": "^10.1.0",
     "react-router": "^7.5.3",
     "remark-frontmatter": "^5.0.0",
-    "strftime": "^0.10.3"
+    "strftime": "^0.10.3",
+    "yaml": "^2.8.0"
   },
   "devDependencies": {
     "@react-router/dev": "^7.5.3",

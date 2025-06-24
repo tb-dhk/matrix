@@ -1,11 +1,8 @@
-import type { Route } from "./+types/route-name";
 import ReactMarkdown from 'react-markdown'
-import strftime from 'strftime'
 import remarkFrontmatter from 'remark-frontmatter'
-import matter from 'gray-matter';
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router"
-import { getFileContents, getDirectoryContents, getConfigJSON, parent } from "./tools"
+import { getFileContents, getConfigJSON, parent, getFrontMatter } from "./tools"
 import { Navbar, Tag, Tree, Series } from "./components"
 
 function ColoredMarkdown(props) {
@@ -37,7 +34,7 @@ export default function MyRouteComponent({ params }) {
     getFileContents("vault/" + params["*"])
       .then(newContent => {
         setContent(newContent);
-        setFrontMatter(matter(newContent).data);
+        setFrontMatter(getFrontMatter(newContent));
       })
       .catch((err) => {
         console.error(err);
@@ -83,7 +80,7 @@ export default function MyRouteComponent({ params }) {
                   · 
                 </React.Fragment>
               )}
-              <div>{strftime("%Y-%m-%d", frontMatter?.date ?? new Date(2008, 0, 15, 0, 0, 0))}</div> 
+              <div>{frontMatter.date}</div> 
               · 
               <div className="tags">{frontMatter?.tags?.map(tag => <Tag name={tag} />)}</div>
             </div>

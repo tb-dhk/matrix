@@ -63,7 +63,7 @@ export default function MyRouteComponent() {
           <div className="blog-list">
             {files.length > 0 ? (
               files.map(([k, v]) => {
-                const filePath = `${path}/${v.name}`.replace(/\.md$/, "").replace("//", "/");
+                const filePath = `${path}/${v.name}/`.replace(/\.md$/, "").replace("//", "/");
                 const obj = build[filePath];
                 if (!obj) return null; // safety net
 

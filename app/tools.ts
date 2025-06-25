@@ -22,6 +22,19 @@ async function fetchGithubFile(filePath) {
   return await response.text();
 }
 
+function rewriteImageLinks(path, markdown) {
+  return markdown.replace(
+    /!\[([^\]]*)\]\((?!https?:\/\/)([^)]+)\)/g,
+    (_, alt, filename) => {
+      const imageExtensions = /\.(png|jpg|jpeg|gif|webp|svg)$/i;
+      if (!imageExtensions.test(filename)) return _; // skip if not an image
+
+      const fullURL = `${VERCEL_BLOB_BASE_URL}/${parent(path)}/assets/${filename}`;
+      return `<img src="${fullURL}" alt="${alt}" style="max-width: 100%;" />\n\n`;
+    }
+  );
+}
+
 export async function getFileContents(path) {
   // step 1: get the timestamp from github
   const timestamp = (await fetchGithubFile('timestamp.txt')).trim();
@@ -41,7 +54,7 @@ export async function getFileContents(path) {
   if (!response.ok) {
     throw new Error(`Failed to fetch file ${timestampedFile}: ${response.status}`);
   }
-  return await response.text();
+  return rewriteImageLinks(path, await response.text());
 }
 
 export async function getBuildJSON() {

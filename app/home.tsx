@@ -97,7 +97,7 @@ export default function MyRouteComponent() {
                 <div>{obj.description}</div>
                 {pathInSeries(i, config.series) && <div 
                   className="grey small"
-                  onClick={() => navigate("/dir" + parent(path))}
+                  onClick={() => navigate("/dir" + parent(i))}
                 >
                   <span className="underline">{config.series[parent(i)].name}</span> #{obj.number}
                 </div>}
@@ -116,7 +116,7 @@ export default function MyRouteComponent() {
                 <div>{obj.description}</div>
                 {pathInSeries(i, config.series) && <div 
                   className="grey small"
-                  onClick={() => navigate("/dir" + parent(path))}
+                  onClick={() => navigate("/dir" + parent(i))}
                 >
                   <span className="underline">{config.series[parent(i)].name}</span> #{obj.number}
                 </div>}

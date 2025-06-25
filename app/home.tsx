@@ -83,7 +83,9 @@ export default function MyRouteComponent() {
       <MetaTags title="matrix" description="welcome to the matrix." />
       <Navbar />
       <div className="home">
-        <div className="title">welcome to the <span className="highlight">{wordFromSecond(timePassed, 6000)}</span>.</div> 
+        <div className="title">welcome to the {" "}
+          <span className="last-word"><span className="highlight">{wordFromSecond(timePassed, 6000)}</span>.</span>
+        </div> 
         <div>
           <div className="label">pinned</div>
           <div className="cards" id="pinned">

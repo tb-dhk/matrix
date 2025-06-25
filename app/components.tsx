@@ -190,7 +190,8 @@ export function MetaTags(props) {
       <meta name="description" content={props.description} />
       <meta property="og:title" content={props.title} />
       <meta property="og:description" content={props.description} />
-      <meta property="og:image" content="/large.png" />
+      <meta property="og:image" content="/large.gif" />
+      <meta property="og:image:type" content="image/gif" />
       <meta property="og:image:alt" content="matrix" />
       <meta property="og:image:width" content="1824" />
       <meta property="og:image:height" content="1004" />

@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import { getBuildJSON } from "./tools"
 import { Navbar, Tag, MetaTags } from "./components"
@@ -36,7 +36,7 @@ export default function SearchPage({ params }) {
           </div>
           <div className="blog-list">
             {build && Object.entries(build)
-              .filter(([id, post]) => matchesQuery(post))
+              .filter(([, post]) => matchesQuery(post))
               .sort(([,a], [,b]) => new Date(b.date) - new Date(a.date))
               .map(([k, v]) => (
                 <div

@@ -3,23 +3,17 @@ import { useState, useEffect } from "react";
 import { getDirectoryContents, getBuildJSON, getConfigJSON, seriesLastUpdated, normalizePath } from "./tools";
 import { Navbar, Tag, Tree, Series, MetaTags } from "./components";
 
-export default function MyRouteWrapper() {
-  const params = useParams();
-  const path = normalizePath(params["*"] || "/");
-
-  return <MyRouteComponent key={path} />;
-}
-
-export function MyRouteComponent() {
+export default function MyRouteComponent() {
   const navigate = useNavigate();
   const params = useParams();
-  const path = "/" + (params["*"] || "");
+  const path = normalizePath(params["*"] || "");
 
   const [directory, setDirectory] = useState(null);
   const [build, setBuild] = useState(null);
   const [config, setConfig] = useState(null);
   const [files, setFiles] = useState([])
 
+  // fetch everything when path changes
   useEffect(() => {
     Promise.all([
       getDirectoryContents(path),
@@ -30,22 +24,22 @@ export function MyRouteComponent() {
         setDirectory(dirData);
         setBuild(buildData);
         setConfig(configData);
-        setFiles(Object.entries(dirData)
-          .filter(([, v]) => v.type === "file")
+        setFiles(Object.entries(directory)
+          .filter(([_, v]) => v.type === "file")
           .sort((a, b) => (a[1].number ?? 0) - (b[1].number ?? 0)))
-      })
+        })
       .catch(err => console.error(err))
-  }, [path]); // <-- add path here
+  }, [path]);
 
   // calculate derived values:
-  const isSeries = config?.series ? Object.hasOwn(config?.series, path) : false;
+  const isSeries = config?.series?.hasOwnProperty(path);
   
   return (
     <div className="head">
       <Navbar />
       <MetaTags title={path} description="explore directory" />
       <div className="body">
-        {directory && <Tree path={path} />}
+        {directory && <Tree path={path.replace("\/$", "")} />}
         <div className="browse">
           <div className="list-header">
             {isSeries ? (
@@ -65,9 +59,9 @@ export function MyRouteComponent() {
           </div>
           <div className="blog-list">
             {files.length > 0 ? (
-              files.map(([, v]) => {
+              files.map(([k, v]) => {
                 const filePath = `${path}/${v.name}`.replace(/\.md$/, "").replace("//", "/");
-                console.log("files", path, files)
+                console.log(build, filePath)
                 const obj = build[filePath];
 
                 return (

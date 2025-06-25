@@ -90,10 +90,10 @@ export default function MyRouteComponent() {
           <div className="label">pinned</div>
           <div className="cards" id="pinned">
             {Object.entries(content.pinned).map(([i, obj]) => (
-              <div className="card">
+              <div className="card" key={i}>
                 <div className="card-title" onClick={() => {navigate("/blog"+i.replace(/\.md$/, ''))}}>{obj.title}</div>
                 <div className="small">{obj.date}</div>
-                <div className="tags">{obj.tags.map(tag => <Tag name={tag} />)}</div>
+                <div className="tags">{obj.tags.map(tag => <Tag name={tag} key={tag} />)}</div>
                 <div>{obj.description}</div>
                 {pathInSeries(i, config.series) && <div 
                   className="grey small"
@@ -109,10 +109,10 @@ export default function MyRouteComponent() {
           <div className="label">latest</div>
           <div className="cards" id="latest">
             {Object.entries(content.recent).map(([i, obj]) => (
-              <div className="card">
+              <div className="card" key={i}>
                 <div className="card-title" onClick={() => {navigate("/blog"+i.replace(/\.md$/, ''))}}>{obj.title}</div>
                 <div className="small">{obj.date}</div>
-                <div className="tags">{obj.tags.map(tag => <Tag name={tag} />)}</div>
+                <div className="tags">{obj.tags.map(tag => <Tag name={tag} key={tag} />)}</div>
                 <div>{obj.description}</div>
                 {pathInSeries(i, config.series) && <div 
                   className="grey small"
@@ -127,21 +127,21 @@ export default function MyRouteComponent() {
         <div>
           <div className="label">tags</div>
           <div className="cards" id="tags">
-            {content.tags.map(tag => <Tag name={tag} />)}
+            {content.tags.map(tag => <Tag name={tag} key={tag} />)}
           </div>
         </div>
         <div>
           <div className="label">series</div>
           <div className="cards" id="series">
             {Object.entries(content.series).map(([i, obj]) => (
-              <div className="card">
+              <div className="card" key={i}>
                 <div className="card-title" onClick={() => {navigate("/dir"+i.replace(/\.md$/, ''))}}>{obj.name}</div>
                 <div>{obj.description}</div>
                 <div className="small">
                   last updated: {
                     seriesLastUpdated(
                       Object.entries(build)
-                        .filter(([id, obj]) => parent(id) === i)
+                        .filter(([id]) => parent(id) === i)
                         .map(i => i[1])
                     ) || "never"
                   }

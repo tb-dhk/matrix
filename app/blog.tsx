@@ -6,17 +6,17 @@ import rehypeRaw from 'rehype-raw'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 
-import { getFileContents, getConfigJSON, parent, getFrontMatter } from "./tools"
+import { getFileContents, getConfigJSON, parent, getFrontMatter, normalizePath } from "./tools"
 import { Navbar, Tag, Tree, Series, MetaTags } from "./components"
 
 function ColoredMarkdown(props) {
   return (
     <ReactMarkdown
       components={{
-        strong: ({node, ...props}) => (
+        strong: ({...props}) => (
           <strong style={{ color: '#8ccdf2' }} {...props} />
         ),
-        em: ({node, ...props}) => (
+        em: ({...props}) => (
           <em style={{ color: '#b28cf2' }} {...props} />
         ),
       }}
@@ -36,7 +36,8 @@ export default function MyRouteComponent({ params }) {
   const navigate = useNavigate()
 
   useEffect(() => {
-    getFileContents("vault/" + params["*"])
+    const path = normalizePath(params["*"])
+    getFileContents("vault" + path)
       .then(newContent => {
         setContent(newContent);
         setFrontMatter(getFrontMatter(newContent));
@@ -49,7 +50,7 @@ export default function MyRouteComponent({ params }) {
           err.message.includes('Failed to fetch') || // fetch failed, possibly 404
           err.message.includes('404') // or explicit 404
         ) {
-          if (location.pathname !== '/blog/404') {
+          if (path !== '/blog/404') {
             navigate('/blog/404');
           }
         } else {
@@ -62,8 +63,8 @@ export default function MyRouteComponent({ params }) {
       .then(data => setConfigData(data))
   }, [params])
 
-  const path = "/" + params["*"]
-  const name = params["*"].split("/").pop();
+  const path = normalizePath(params["*"])
+  const name = path.split("/").pop();
 
   return (
     <div className="head">
@@ -89,7 +90,7 @@ export default function MyRouteComponent({ params }) {
               )}
               <div>{frontMatter.date}</div> 
               · 
-              <div className="tags">{frontMatter?.tags?.sort().map(tag => <Tag name={tag} />)}</div>
+              <div className="tags">{frontMatter?.tags?.sort().map(tag => <Tag name={tag} key={tag} />)}</div>
             </div>
           </div>
           <div className="content">

@@ -1,4 +1,4 @@
-import { textToColor, getBuildJSON, getConfigJSON, getDirectoryContents, parent } from "./tools"
+import { textToColor, getBuildJSON, getConfigJSON, getDirectoryContents, parent, normalizePath } from "./tools"
 import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router"
 
@@ -21,13 +21,7 @@ export function Tree(props) {
 
   const [contents, setContents] = useState([])
 
-  let path = props.path
-  if (!path.startsWith("/")) {
-    path = "/" + path
-  }
-  if (!path.endsWith("/")) {
-    path = path + "/"
-  }
+  let path = normalizePath(props.path) 
 
   useEffect(() => {
     getDirectoryContents(props.path)
@@ -44,15 +38,15 @@ export function Tree(props) {
       <div 
         className="highlight"
         onClick={() => navigate("/dir" + path)}
-      >{props.path || "/"}</div>
+      >{path}</div>
       {contents && contents.map((i, idx) => {
         const branch = contents.length - 1 === idx ? "└──" : "├──"
-        let url = "/" + (i.type === "folder" ? "dir" : "blog") + path + i.name
+        let url = "/" + (i.type === "folder" ? "dir" : "blog") + path + (path === "/" ? "" : "/") + i.name
         if (i.name === "..") {
-          url = "/dir" + parent(props.path)
+          url = "/dir" + parent(path)
         }
         return (
-          <div onClick={() => navigate(url)}>
+          <div key={i.name} onClick={() => navigate(url)}>
             {branch + " "} 
             <span 
               className={`${i.type === "folder" ? "highlight" : ""} ${i.name.replace(".md", "") === props.current ? "highlight2" : ""}`}
@@ -83,7 +77,7 @@ export function Tags () {
     <div className="left tags-panel">
       <div className="label">tags:</div>
       <div className="tags-column">
-        {tags.map(i => <Tag name={i} />)}
+        {tags.map(i => <Tag name={i} key={i} />)}
       </div>
     </div>
   )
@@ -108,7 +102,7 @@ export function Series (props) {
 
   // filter files directly under this directory
   const files = Object.entries(build)
-    .filter(([filepath, fileattrs]) => parent(filepath) === props.path)
+    .filter(([filepath]) => parent(filepath) === props.path)
     .sort((a, b) => a[1].number - b[1].number);
 
   return (
@@ -155,7 +149,7 @@ export function SearchBar() {
       if (item) {
         navigate("/blog" + query);
       } else {
-        let dirPath = query.endsWith("/") ? query : query + "/";
+        let dirPath = normalizePath(query) + "/";
         const hasDirectory = Object.keys(buildData).some(key => key.startsWith(dirPath));
 
         if (hasDirectory) {

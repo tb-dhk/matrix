@@ -3,6 +3,16 @@ import YAML from 'yaml';
 
 const VERCEL_BLOB_BASE_URL = "https://uobd8cw20y5uorxw.public.blob.vercel-storage.com";
 
+export function normalizePath(path) {
+  if (!path || path.trim() === "") return "/";
+
+  // Remove all leading and trailing slashes
+  const cleaned = path.trim().replace(/^\/+|\/+$/g, "");
+
+  // Return with a single leading slash
+  return "/" + cleaned;
+}
+
 async function fetchGithubFile(filePath) {
   const GITHUB_OWNER = 'tb-dhk';  // update as needed
   const GITHUB_REPO = 'matrix-vault';
@@ -177,10 +187,7 @@ export function pathInSeries(path, series) {
 
 export function parent(path) {
   // remove trailing slash if present
-  while (path.endsWith('/')) {
-    path = path.slice(0, -1);
-  }
-  return path.split("/").slice(0, -1).join("/");
+  return "/" + normalizePath(path).split("/").slice(1, -1).join("/");
 }
 
 export function textToColor(text, lightness = 25) {

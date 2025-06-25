@@ -14,7 +14,7 @@ export default function MyRouteComponent() {
 
   // fetch everything when path changes
   useEffect(() => {
-
+    console.log(path)
     Promise.all([
       getDirectoryContents(path),
       getBuildJSON(),
@@ -51,7 +51,6 @@ export default function MyRouteComponent() {
                 <div>last updated: {
                   seriesLastUpdated(
                     Object.entries(files)
-                      .filter(([id, obj]) => parent(id) === path)
                       .map(i => i[1])
                   ) || "never"
                 }</div>
@@ -63,9 +62,8 @@ export default function MyRouteComponent() {
           <div className="blog-list">
             {files.length > 0 ? (
               files.map(([k, v]) => {
-                const filePath = `${path}/${v.name}/`.replace(/\.md$/, "").replace("//", "/");
+                const filePath = `${path}/${v.name}/`.replace(/\/$/, "").replace(/\.md$/, "").replace("//", "/");
                 const obj = build[filePath];
-                if (!obj) return null; // safety net
 
                 return (
                   <div

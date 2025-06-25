@@ -126,8 +126,15 @@ form > * {
 .browse, .post {
   display: flex;
   flex-direction: column;
-  gap: 10px;
   margin: 0 auto
+}
+
+.browse {
+  gap: 30px;
+}
+
+.post {
+  gap: 10px
 }
 
 .home {
@@ -168,6 +175,7 @@ form > * {
 
 .list-entry {
   display: grid;
+  gap: 20px
 }
 
 .number {
@@ -243,7 +251,8 @@ form > * {
 }
 
 .series-row {
-  font-size: 1.25rem
+  font-size: 1.25rem;
+  column-gap: 20px;
 }
 
 .underline {

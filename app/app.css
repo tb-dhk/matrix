@@ -15,6 +15,10 @@ html {
   font-size: clamp(15px, 3.5vw, 20px);
 }
 
+math, math * {
+  font-family: serif !important;
+}
+
 a, .highlight {
   color: #8ccdf2
 }
@@ -282,4 +286,16 @@ button {
 
 .description {
   font-size: 1.25rem
+}
+
+.katex {
+  margin: 0 auto
+}
+
+.katex-html {
+  display: none
+}
+
+.small {
+  font-size: 1rem !important
 }

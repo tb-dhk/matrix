@@ -3,6 +3,8 @@ import remarkFrontmatter from 'remark-frontmatter'
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router"
 import rehypeRaw from 'rehype-raw'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
 
 import { getFileContents, getConfigJSON, parent, getFrontMatter } from "./tools"
 import { Navbar, Tag, Tree, Series, MetaTags } from "./components"
@@ -18,11 +20,8 @@ function ColoredMarkdown(props) {
           <em style={{ color: '#b28cf2' }} {...props} />
         ),
       }}
-      remarkPlugins={[remarkFrontmatter]}
-      rehypePlugins={[rehypeRaw]}  
-      transformImageURI={uri =>
-        uri.startsWith("http") ? uri : `${process.env.REACT_IMAGE_BASE_URL}${uri}`
-      }
+      remarkPlugins={[remarkFrontmatter, remarkMath]}
+      rehypePlugins={[rehypeRaw, rehypeKatex]}  
     >
       {props.children}
     </ReactMarkdown>

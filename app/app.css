@@ -12,7 +12,7 @@
 html {
   background-color: #11173d;
   color: #d5d6d8;
-  font-size: 20px;
+  font-size: clamp(15px, 3.5vw, 20px);
 }
 
 a, .highlight {

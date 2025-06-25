@@ -84,7 +84,7 @@ export default function MyRouteComponent({ params }) {
               )}
               <div>{frontMatter.date}</div> 
               · 
-              <div className="tags">{frontMatter?.tags?.map(tag => <Tag name={tag} />)}</div>
+              <div className="tags">{frontMatter?.tags?.sort().map(tag => <Tag name={tag} />)}</div>
             </div>
           </div>
           <div className="content">

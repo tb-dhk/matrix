@@ -41,7 +41,7 @@ export default function MyRouteComponent() {
       <Navbar />
       <MetaTags title={path} description="explore directory" />
       <div className="body">
-        {directory && <Tree path={path} />}
+        {directory && <Tree path={path.replace("\/$", "")} />}
         <div className="browse">
           <div className="list-header">
             {isSeries ? (

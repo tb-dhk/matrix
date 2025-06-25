@@ -185,6 +185,7 @@ export function SearchBar() {
 export function MetaTags(props) {
   return (
     <React.Fragment>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title>{props.title}</title>
       <meta name="description" content={props.description} />
       <meta property="og:title" content={props.title} />

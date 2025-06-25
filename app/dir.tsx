@@ -6,7 +6,7 @@ import { Navbar, Tag, Tree, Series, MetaTags } from "./components";
 export default function MyRouteComponent() {
   const navigate = useNavigate();
   const params = useParams();
-  const path = "/" + (params["*"] || "");
+  const path = "/" + (params["*"] || "").replace("\/$", "");
 
   const [directory, setDirectory] = useState(null);
   const [build, setBuild] = useState(null);
@@ -14,7 +14,6 @@ export default function MyRouteComponent() {
 
   // fetch everything when path changes
   useEffect(() => {
-    console.log(path)
     Promise.all([
       getDirectoryContents(path),
       getBuildJSON(),
@@ -62,7 +61,7 @@ export default function MyRouteComponent() {
           <div className="blog-list">
             {files.length > 0 ? (
               files.map(([k, v]) => {
-                const filePath = `${path}/${v.name}/`.replace(/\/$/, "").replace(/\.md$/, "").replace("//", "/");
+                const filePath = `${path}/${v.name}/`.replace(/\.md$/, "").replace("//", "/");
                 const obj = build[filePath];
 
                 return (

@@ -53,7 +53,7 @@ export default function MyRouteComponent() {
         const recent = Object.fromEntries(
           Object.entries(buildData)
             .sort((a, b) => new Date(b[1].date) - new Date(a[1].date))
-            .slice(0, 3)
+            .slice(0, 10)
         )
 
         let tags = new Set();

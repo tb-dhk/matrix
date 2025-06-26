@@ -12,7 +12,7 @@
 html {
   background-color: #11173d;
   color: #d5d6d8;
-  font-size: clamp(15px, 3.5vw, 20px);
+  overflow-x: hidden;
 }
 
 math, math * {
@@ -34,7 +34,6 @@ a:visited, .highlight2 {
 
 .body {
   height: 90%;
-  width: 100vw;
   display: flex;
   flex-direction: row;
 }
@@ -43,8 +42,10 @@ a:visited, .highlight2 {
   padding: 30px
 }
 
-
 @media (min-width: 768px) {
+  html {
+    font-size: clamp(15px, 3.5vw, 20px);
+  }
   .left, .right {
     display: block;
     width: 15%;
@@ -58,12 +59,20 @@ a:visited, .highlight2 {
   }
 }
 
+.content {
+  text-align: justify;
+  font-size: 1.1rem;
+}
+
 @media (max-width: 767px) {
+  html {
+    font-size: clamp(15px, 4vw, 20px);
+  }
   .left, .right {
     display: none !important;
   }
   .browse, .post {
-    width: 100%
+    width: 90%
   }
   .logo {
     font-size: clamp(2rem, 6.25vw, 2.5rem);
@@ -98,7 +107,6 @@ a:visited, .highlight2 {
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    margin-bottom: 40px
   }
 
   form {
@@ -262,7 +270,7 @@ form > * {
 .header {
   position: relative;
   padding: 10px 0;
-  height: 60px; /* or whatever fixed height you want */
+  min-height: 50px
 }
 
 .searchbar {

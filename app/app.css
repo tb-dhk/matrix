@@ -230,8 +230,9 @@ form > * {
 
 .tag {
   padding: 5px 10px;
-  border-radius: calc(5px + 0.5rem); /* half the height */
+  border-radius: 9999px; /* half the height */
   white-space: nowrap;  /* prevent line break */
+  font-size: 0.9rem
 }
 
 .tree {

@@ -89,9 +89,8 @@ export default function MyRouteComponent({ params }) {
                 </React.Fragment>
               )}
               <div>{frontMatter.date}</div> 
-              · 
-              <div className="tags">{frontMatter?.tags?.sort().map(tag => <Tag name={tag} key={tag} />)}</div>
             </div>
+            <div className="tags">{frontMatter?.tags?.sort().map(tag => <Tag name={tag} key={tag} />)}</div>
           </div>
           <div className="content">
             <ColoredMarkdown remarkPlugins={[remarkFrontmatter]}>

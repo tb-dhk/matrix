@@ -39,7 +39,7 @@ a:visited, .highlight2 {
 }
 
 .body > div {
-  padding: 30px
+  padding: 25px
 }
 
 @media (min-width: 768px) {
@@ -90,7 +90,7 @@ a:visited, .highlight2 {
     display: none !important;
   }
   .browse, .post {
-    width: 90%
+    width: 95%
   }
   .logo {
     font-size: clamp(2rem, 6.25vw, 2.5rem);

@@ -39,7 +39,7 @@ function rewriteImageLinks(path, markdown) {
       const imageExtensions = /\.(png|jpg|jpeg|gif|webp|svg)$/i;
       if (!imageExtensions.test(filename)) return _; // skip if not an image
 
-      const fullURL = `${VERCEL_BLOB_BASE_URL}/${parent(path)}/assets/${filename}`;
+      const fullURL = `${VERCEL_BLOB_BASE_URL}${parent(path)}/assets/${filename}`;
       return `<img src="${fullURL}" alt="${alt}" style="max-width: 100%;" />\n\n`;
     }
   );

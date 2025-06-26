@@ -57,29 +57,6 @@ a:visited, .highlight2 {
   .logo {
    font-size: 2.5rem;
   }
-}
-
-.content {
-  text-align: justify;
-  font-size: 1.1rem;
-}
-
-@media (max-width: 767px) {
-  html {
-    font-size: clamp(15px, 4vw, 20px);
-  }
-  .left, .right {
-    display: none !important;
-  }
-  .browse, .post {
-    width: 90%
-  }
-  .logo {
-    font-size: clamp(2rem, 6.25vw, 2.5rem);
-  }
-}
-
-@media (min-width: 575px) {
   form {
     position: absolute;
     left: 50%;
@@ -101,7 +78,23 @@ a:visited, .highlight2 {
   }
 }
 
-@media (max-width: 574px) {
+.content {
+  text-align: justify;
+}
+
+@media (max-width: 767px) {
+  html {
+    font-size: clamp(20px, 4vw, 25px);
+  }
+  .left, .right {
+    display: none !important;
+  }
+  .browse, .post {
+    width: 90%
+  }
+  .logo {
+    font-size: clamp(2rem, 6.25vw, 2.5rem);
+  }
   .header {
     display: flex;
     flex-direction: column;

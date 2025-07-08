@@ -26,7 +26,7 @@ export function Tree(props) {
   useEffect(() => {
     getDirectoryContents(props.path)
       .then(data => {
-        setContents(data.sort((a, b) => a.name - b.name))
+        setContents(data.sort((a, b) => a.name.localeCompare(b.name)))
         if (path !== "/") {
           setContents(prev => [{name: "..", type: "folder"}, ...prev])
         }

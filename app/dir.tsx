@@ -32,7 +32,7 @@ export function MyRouteComponent() {
         setConfig(configData);
         setFiles(Object.entries(dirData)
           .filter(([, v]) => v.type === "file")
-          .sort((a, b) => (a[1].number ?? 0) - (b[1].number ?? 0)))
+          .sort((a, b) => (buildData[a[1].path].number ?? 0) - (buildData[b[1].path].number ?? 0)))
       })
       .catch(err => console.error(err))
   }, [path]); // <-- add path here
@@ -67,7 +67,6 @@ export function MyRouteComponent() {
             {files.length > 0 ? (
               files.map(([, v]) => {
                 const filePath = `${path}/${v.name}`.replace(/\.md$/, "").replace("//", "/");
-                console.log("files", path, files)
                 const obj = build[filePath];
 
                 return (

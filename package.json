@@ -9,6 +9,7 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@r4ai/remark-callout": "^0.6.2",
     "@react-router/node": "^7.5.3",
     "@react-router/serve": "^7.5.3",
     "@vercel/blob": "^1.1.1",
@@ -23,6 +24,7 @@
     "rehype-katex": "^7.0.1",
     "rehype-raw": "^7.0.0",
     "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
     "strftime": "^0.10.3",
     "yaml": "^2.8.0"

@@ -2,8 +2,10 @@ import ReactMarkdown from 'react-markdown'
 import remarkFrontmatter from 'remark-frontmatter'
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router"
+import remarkCallout from "@r4ai/remark-callout";
 import rehypeRaw from 'rehype-raw'
 import remarkMath from 'remark-math'
+import remarkGfm from 'remark-gfm'
 import rehypeKatex from 'rehype-katex'
 
 import { getFileContents, getConfigJSON, parent, getFrontMatter, normalizePath } from "./tools"
@@ -19,8 +21,11 @@ function ColoredMarkdown(props) {
         em: ({...props}) => (
           <em style={{ color: '#b28cf2' }} {...props} />
         ),
+        blockquote: ({...props}) => (
+          <blockquote style={{ color: '#888' }} {...props} />
+        )
       }}
-      remarkPlugins={[remarkFrontmatter, remarkMath]}
+      remarkPlugins={[remarkFrontmatter, remarkMath, remarkGfm, remarkCallout]}
       rehypePlugins={[rehypeRaw, rehypeKatex]}  
     >
       {props.children}

@@ -9,6 +9,11 @@
   font-family: CozetteVector  
 }
 
+a {
+  text-decoration: none;
+  color: #d5d6d8
+}
+
 html {
   background-color: #11173d;
   color: #d5d6d8;
@@ -19,18 +24,18 @@ math, math * {
   font-family: serif !important;
 }
 
-a, .highlight {
+.md-link, .highlight {
   color: #8ccdf2
 }
 
-a:visited, .highlight2 {
+.md-link:visited, .highlight2 {
   color: #b28cf2
 }
 
 .head {
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
+  overflow: auto;
   padding: 0;
   margin: 0;
 }
@@ -148,6 +153,7 @@ form > * {
   flex-direction: column;
   gap: 30px;
   padding: 20px;
+  overflow: scroll;
 }
 
 .home > div {

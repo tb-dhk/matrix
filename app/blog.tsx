@@ -23,6 +23,9 @@ function ColoredMarkdown(props) {
         ),
         blockquote: ({...props}) => (
           <blockquote style={{ color: '#888' }} {...props} />
+        ),
+        a: ({...props}) => (
+          <a className="md-link" {...props} />
         )
       }}
       remarkPlugins={[remarkFrontmatter, remarkMath, remarkGfm, remarkCallout]}
@@ -84,12 +87,11 @@ export default function MyRouteComponent({ params }) {
             <div className="metadata">
               {(configData && (parent(path) in configData.series)) && (
                 <React.Fragment>
-                  <div>
+                  <a href={"/dir" + parent(path)}>
                     <span 
                       className="underline"
-                      onClick={() => navigate("/dir" + parent(path))}
                     >{configData?.series?.[parent(path)].name}</span> #{frontMatter.number}
-                  </div>
+                  </a>
                   · 
                 </React.Fragment>
               )}

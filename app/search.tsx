@@ -4,7 +4,6 @@ import { getBuildJSON } from "./tools"
 import { Navbar, Tag, MetaTags } from "./components"
 
 export default function SearchPage({ params }) {
-  const navigate = useNavigate();
   const query = params["*"]?.toLowerCase() || "";
 
   const [build, setBuild] = useState(null);
@@ -39,18 +38,19 @@ export default function SearchPage({ params }) {
               .filter(([, post]) => matchesQuery(post))
               .sort(([,a], [,b]) => new Date(b.date) - new Date(a.date))
               .map(([k, v]) => (
-                <div
-                  key={k}
-                  className="card"
-                  onClick={() => navigate("/blog" + k.replace(/\.md$/, ""))}
-                >
-                  <div className="card-title">{v.title}</div>
-                  <div>{v.date}</div>
-                  <div className="tags">
-                    {v.tags.map(tag => <Tag key={tag} name={tag} />)}
+                <a href={"/blog" + k.replace(/\.md$/, "")}>
+                  <div
+                    key={k}
+                    className="card"
+                  >
+                    <div className="card-title">{v.title}</div>
+                    <div>{v.date}</div>
+                    <div className="tags">
+                      {v.tags.map(tag => <Tag key={tag} name={tag} />)}
+                    </div>
+                    <div>{v.description}</div>
                   </div>
-                  <div>{v.description}</div>
-                </div>
+                </a>
               ))}
           </div>
         </div>

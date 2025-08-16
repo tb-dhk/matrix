@@ -12,8 +12,6 @@ export default function MyRouteComponent({ params }) {
       .catch(err => console.error(err));
   }, [params]);
 
-  let navigate = useNavigate()
-
   return (
     <div className="head">
       <MetaTags title={`tag "${params["*"]}"`} description={`posts with tag "${params["*"]}"`} />
@@ -30,12 +28,14 @@ export default function MyRouteComponent({ params }) {
               .sort((a, b) => b.date - a.date)
               .map(([k, v]) => {
                 return (
-                  <div className="card" key={k} onClick={() => {navigate("/blog"+k.replace(/\.md$/, ''))}}>
-                    <div className="card-title">{v.title}</div>
-                    <div>{v.date}</div>
-                    <div className="tags">{v.tags.map(tag => <Tag name={tag} key={tag} />)}</div>
-                    <div>{v.description}</div>
-                  </div>
+                  <a href={"/blog"+k.replace(/\.md$/, '')}>
+                    <div className="card" key={k}>
+                      <div className="card-title">{v.title}</div>
+                      <div>{v.date}</div>
+                      <div className="tags">{v.tags.map(tag => <Tag name={tag} key={tag} />)}</div>
+                      <div>{v.description}</div>
+                    </div>
+                  </a>
                 )
               })}
           </div>

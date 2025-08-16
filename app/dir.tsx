@@ -11,7 +11,6 @@ export default function MyRouteWrapper() {
 }
 
 export function MyRouteComponent() {
-  const navigate = useNavigate();
   const params = useParams();
   const path = "/" + (params["*"] || "");
 
@@ -70,20 +69,21 @@ export function MyRouteComponent() {
                 const obj = build[filePath];
 
                 return (
-                  <div
-                    key={filePath}
-                    className="list-entry"
-                    onClick={() => navigate("/blog" + filePath)}
-                    style={{ gridTemplateColumns: isSeries ? "1fr 9fr" : "1fr" }}
-                  >
-                    {isSeries && <div className="number">#{obj.number}</div>}
-                    <div className="card">
-                      <div className="card-title">{obj.title}</div>
-                      <div>{obj.date}</div>
-                      <div className="tags">{obj.tags.map(tag => <Tag name={tag} key={tag} />)}</div>
-                      <div>{obj.description}</div>
+                  <a href={"/blog" + filePath}>
+                    <div
+                      key={filePath}
+                      className="list-entry"
+                      style={{ gridTemplateColumns: isSeries ? "1fr 9fr" : "1fr" }}
+                    >
+                      {isSeries && <div className="number">#{obj.number}</div>}
+                      <div className="card">
+                        <div className="card-title">{obj.title}</div>
+                        <div>{obj.date}</div>
+                        <div className="tags">{obj.tags.map(tag => <Tag name={tag} key={tag} />)}</div>
+                        <div>{obj.description}</div>
+                      </div>
                     </div>
-                  </div>
+                  </a>
                 );
               })
             ) : (

@@ -20,8 +20,6 @@ export default function MyRouteComponent() {
     pinned: []
   })
   
-  let navigate = useNavigate()
-
   const [startTime, setStartTime] = useState(null);
   const [timePassed, setTimePassed] = useState(0);
 
@@ -90,18 +88,21 @@ export default function MyRouteComponent() {
           <div className="label">pinned</div>
           <div className="cards" id="pinned">
             {Object.entries(content.pinned).map(([i, obj]) => (
-              <div className="card" key={i}>
-                <div className="card-title" onClick={() => {navigate("/blog"+i.replace(/\.md$/, ''))}}>{obj.title}</div>
-                <div className="small">{obj.date}</div>
-                <div className="tags">{obj.tags.map(tag => <Tag name={tag} key={tag} />)}</div>
-                <div>{obj.description}</div>
-                {pathInSeries(i, config.series) && <div 
-                  className="grey small"
-                  onClick={() => navigate("/dir" + parent(i))}
-                >
-                  <span className="underline">{config.series[parent(i)].name}</span> #{obj.number}
-                </div>}
-              </div>
+              <a href={"/blog"+i.replace(/\.md$/, '')}>
+                <div className="card" key={i}>
+                  <div className="card-title">{obj.title}</div>
+                  <div className="small">{obj.date}</div>
+                  <div className="tags">{obj.tags.map(tag => <Tag name={tag} key={tag} />)}</div>
+                  <div>{obj.description}</div>
+                  {pathInSeries(i, config.series) && <a href={"dir" + parent(i)}>
+                    <div 
+                      className="grey small"
+                    >
+                      <span className="underline">{config.series[parent(i)].name}</span> #{obj.number}
+                    </div>
+                  </a>}
+                </div>
+              </a>
             ))}
           </div>  
         </div>
@@ -109,18 +110,21 @@ export default function MyRouteComponent() {
           <div className="label">latest</div>
           <div className="cards" id="latest">
             {Object.entries(content.recent).map(([i, obj]) => (
-              <div className="card" key={i}>
-                <div className="card-title" onClick={() => {navigate("/blog"+i.replace(/\.md$/, ''))}}>{obj.title}</div>
-                <div className="small">{obj.date}</div>
-                <div className="tags">{obj.tags.map(tag => <Tag name={tag} key={tag} />)}</div>
-                <div>{obj.description}</div>
-                {pathInSeries(i, config.series) && <div 
-                  className="grey small"
-                  onClick={() => navigate("/dir" + parent(i))}
-                >
-                  <span className="underline">{config.series[parent(i)].name}</span> #{obj.number}
-                </div>}
+              <a href={"/blog"+i.replace(/\.md$/, '')}>
+                <div className="card" key={i}>
+                  <div className="card-title">{obj.title}</div>
+                  <div className="small">{obj.date}</div>
+                  <div className="tags">{obj.tags.map(tag => <Tag name={tag} key={tag} />)}</div>
+                  <div>{obj.description}</div>
+                  {pathInSeries(i, config.series) && <a href={"/dir" + parent(i)}>
+                    <div 
+                      className="grey small"
+                    >
+                      <span className="underline">{config.series[parent(i)].name}</span> #{obj.number}
+                    </div>
+                  </a>}
               </div>
+              </a>
             ))}
           </div>
         </div>
@@ -134,19 +138,21 @@ export default function MyRouteComponent() {
           <div className="label">series</div>
           <div className="cards" id="series">
             {Object.entries(content.series).map(([i, obj]) => (
-              <div className="card" key={i}>
-                <div className="card-title" onClick={() => {navigate("/dir"+i.replace(/\.md$/, ''))}}>{obj.name}</div>
-                <div>{obj.description}</div>
-                <div className="small">
-                  last updated: {
-                    seriesLastUpdated(
-                      Object.entries(build)
-                        .filter(([id]) => parent(id) === i)
-                        .map(i => i[1])
-                    ) || "never"
-                  }
+              <a href={"/dir"+i.replace(/\.md$/, '')}>
+                <div className="card" key={i}>
+                  <div className="card-title">{obj.name}</div>
+                  <div>{obj.description}</div>
+                  <div className="small">
+                    last updated: {
+                      seriesLastUpdated(
+                        Object.entries(build)
+                          .filter(([id]) => parent(id) === i)
+                          .map(i => i[1])
+                      ) || "never"
+                    }
+                  </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>

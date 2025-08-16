@@ -3,22 +3,19 @@ import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router"
 
 export function Tag (props) {
-  let navigate = useNavigate()
-
-  return <div 
-    className="tag" 
-    style={{
-      color: textToColor(props.name),
-      backgroundColor: textToColor(props.name, 85),
-      border: `2px solid ${textToColor(props.name)}`
-    }}
-    onClick={() => navigate("/tags/"+props.name)}
-  >{props.name}</div>
+  return <a href={"/tags/"+props.name}>
+    <div 
+      className="tag" 
+      style={{
+        color: textToColor(props.name),
+        backgroundColor: textToColor(props.name, 85),
+        border: `2px solid ${textToColor(props.name)}`
+      }}
+    >{props.name}</div>
+  </a>
 }
 
 export function Tree(props) {
-  const navigate = useNavigate()
-
   const [contents, setContents] = useState([])
 
   let path = normalizePath(props.path) 
@@ -35,10 +32,11 @@ export function Tree(props) {
 
   return (
     <div className="left tree">
-      <div 
-        className="highlight"
-        onClick={() => navigate("/dir" + path)}
-      >{path}</div>
+      <a href={"/dir" + path}>
+        <div 
+          className="highlight"
+        >{path}</div>
+      </a>
       {contents && contents.map((i, idx) => {
         const branch = contents.length - 1 === idx ? "└──" : "├──"
         let url = "/" + (i.type === "folder" ? "dir" : "blog") + path + (path === "/" ? "" : "/") + i.name
@@ -46,14 +44,16 @@ export function Tree(props) {
           url = "/dir" + parent(path)
         }
         return (
-          <div key={i.name} onClick={() => navigate(url)}>
-            {branch + " "} 
-            <span 
-              className={`${i.type === "folder" ? "highlight" : ""} ${i.name.replace(".md", "") === props.current ? "highlight2" : ""}`}
-            >
-              {i.name}
-            </span>
-          </div>
+          <a href={url}>
+            <div key={i.name}>
+              {branch + " "} 
+              <span 
+                className={`${i.type === "folder" ? "highlight" : ""} ${i.name.replace(".md", "") === props.current ? "highlight2" : ""}`}
+              >
+                {i.name}
+              </span>
+            </div>
+          </a>
         )
       })}
     </div>
@@ -122,14 +122,13 @@ export function Series (props) {
 }
 
 export function Navbar() {
-  const navigate = useNavigate()
-
   return (
     <div className="header">
-      <div 
-        className="logo highlight"
-        onClick={() => navigate("/")} 
-      >matrix</div>
+      <a href="/">
+        <div 
+          className="logo highlight"
+        >matrix</div>
+      </a>
       <SearchBar />
     </div>
   )

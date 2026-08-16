@@ -126,7 +126,7 @@ export function Navbar() {
     <div className="header">
       <a href="/">
         <div 
-          className="logo highlight"
+          className="logo highlight glow"
         >matrix</div>
       </a>
       <SearchBar />

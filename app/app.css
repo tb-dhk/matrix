@@ -24,6 +24,14 @@ math, math * {
   font-family: serif !important;
 }
 
+.md-link, .link {
+  text-decoration: underline;
+}
+
+.glow {
+  text-shadow: 0 0 10px #0ff
+}
+
 .md-link, .highlight {
   color: #8ccdf2
 }

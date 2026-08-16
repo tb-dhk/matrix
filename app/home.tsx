@@ -82,7 +82,7 @@ export default function MyRouteComponent() {
       <Navbar />
       <div className="home">
         <div className="title">welcome to the {" "}
-          <span className="last-word"><span className="highlight">{wordFromSecond(timePassed, 6000)}</span>.</span>
+          <span className="last-word"><span className="highlight glow">{wordFromSecond(timePassed, 6000)}</span>.</span>
         </div> 
         <div>
           <div className="label">pinned</div>

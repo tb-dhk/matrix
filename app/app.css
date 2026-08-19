@@ -373,5 +373,11 @@ img {
 }
 
 .alt-text {
-  color: #9da0a4
+  display: block;
+  color: #9da0a4;
+  text-align: center
+}
+
+figure {
+  margin: 5% 0
 }

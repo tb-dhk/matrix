@@ -32,7 +32,8 @@ export function MyRouteComponent() {
         setFiles(Object.entries(dirData)
           .filter(([, v]) => v.type === "file")
           .sort((a, b) => (buildData[a[1].path].number ?? 0) - (buildData[b[1].path].number ?? 0)))
-      })
+        }
+      )
       .catch(err => console.error(err))
   }, [path]); // <-- add path here
 

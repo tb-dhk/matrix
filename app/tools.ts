@@ -1,7 +1,7 @@
 import SHA256 from "crypto-js/sha256";
 import YAML from 'yaml';
 
-const VERCEL_BLOB_BASE_URL = "https://uobd8cw20y5uorxw.public.blob.vercel-storage.com";
+export const VERCEL_BLOB_BASE_URL = "https://uobd8cw20y5uorxw.public.blob.vercel-storage.com";
 
 export function normalizePath(path) {
   if (!path || path.trim() === "") return "/";
@@ -11,25 +11,6 @@ export function normalizePath(path) {
 
   // Return with a single leading slash
   return "/" + cleaned;
-}
-
-async function fetchGithubFile(filePath) {
-  const GITHUB_OWNER = 'tb-dhk';  // update as needed
-  const GITHUB_REPO = 'matrix-vault';
-  const GITHUB_BRANCH = 'main';
-  const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;  // or wherever you keep it
-
-  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}?ref=${GITHUB_BRANCH}`;
-  const response = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
-      Accept: "application/vnd.github.v3.raw"
-    }
-  });
-  if (!response.ok) {
-    throw new Error(`GitHub API failed to fetch ${filePath}: ${response.status}`);
-  }
-  return await response.text();
 }
 
 function rewriteImageLinks(path, markdown) {
@@ -45,36 +26,42 @@ function rewriteImageLinks(path, markdown) {
   );
 }
 
-export async function getFileContents(path) {
-  // step 1: get the timestamp from github
-  const timestamp = (await fetchGithubFile('timestamp.txt')).trim();
-
-  // normalize path and insert timestamp before extension
-  const ext = path.endsWith('.json') ? '.json' : '.md';
-  let baseName = path;
-  if (baseName.endsWith(ext)) {
-    baseName = baseName.slice(0, -ext.length);
-  }
-  const timestampedFile = `${baseName}.${timestamp}${ext}`;
-
-  // step 2: fetch file from vercel blob with timestamp
-  const url = `${VERCEL_BLOB_BASE_URL}/${encodeURIComponent(timestampedFile)}`;
+export async function fetchFile(path) {
+  const url = `${VERCEL_BLOB_BASE_URL}/${encodeURIComponent(path)}`;
 
   const response = await fetch(url);
   if (!response.ok) {
-    throw new Error(`Failed to fetch file ${timestampedFile}: ${response.status}`);
+    throw new Error(`Failed to fetch file ${path}: ${response.status}`);
   }
   return rewriteImageLinks(path, await response.text());
 }
 
+async function getLatestCommit() {
+  const url = `https://api.github.com/repos/tb-dhk/matrix-vault/commits?per_page=1`;
+  const headers = {
+    'Accept': 'application/vnd.github.v3+json',
+  };
+
+  const response = await fetch(url, { headers });
+  if (!response.ok) {
+    throw new Error(`GitHub API error: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data[0].sha
+}
+
+export async function getFileContents(path) {
+  const manifest = JSON.parse(await fetchFile(`manifest.${await getLatestCommit()}.json`)) 
+  return fetchFile(manifest[`./${path}`])
+}
+
 export async function getBuildJSON() {
-  const json = await getFileContents("build.json")
-  return JSON.parse(json)
+  return JSON.parse(await getFileContents(`build.json`)) 
 }
 
 export async function getConfigJSON() {
-  const json = await getFileContents("config.json")
-  return JSON.parse(json)
+  return JSON.parse(await getFileContents(`config.json`))
 }
 
 export async function getDirectoryContents(directoryPath = '/') {
@@ -121,7 +108,7 @@ export async function getDirectoryContents(directoryPath = '/') {
       if (entry.type === 'file') {
         entry.meta = {
           ...entry.meta,
-          content: await getFileContents(`vault${entry.path}`), // adjust path as needed
+          content: await getFileContents(`vault${entry.path}.md`), // adjust path as needed
         };
       }
       return entry;

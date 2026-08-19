@@ -10,7 +10,7 @@ import { rehypeExtendedTable } from 'rehype-extended-table';
 import remarkGFM from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 
-import { getFileContents, getConfigJSON, parent, getFrontMatter, normalizePath } from "./tools"
+import { VERCEL_BLOB_BASE_URL, getFileContents, getConfigJSON, parent, getFrontMatter, normalizePath } from "./tools"
 import { Navbar, Tag, Tree, Series, MetaTags } from "./components"
 
 export function convertObsidianLinks(markdown: string, path: string): string {
@@ -84,7 +84,7 @@ export default function MyRouteComponent({ params }) {
 
   useEffect(() => {
     const path = normalizePath(params["*"])
-    getFileContents("vault" + path)
+    getFileContents("vault" + path + ".md")
       .then(newContent => {
         setContent(newContent);
         setFrontMatter(getFrontMatter(newContent));

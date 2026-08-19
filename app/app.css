@@ -357,3 +357,8 @@ table {
   border-spacing: 50px 10px;
   margin-left: -50px;         /* cancels spacing on the very left */
 }
+
+.box {
+  display: inline-block;
+  padding: 0 5px;
+}

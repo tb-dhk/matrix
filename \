@@ -13,44 +13,6 @@ import rehypeSlug from 'rehype-slug';
 import { getFileContents, getConfigJSON, parent, getFrontMatter, normalizePath } from "./tools"
 import { Navbar, Tag, Tree, Series, MetaTags } from "./components"
 
-export function convertObsidianLinks(markdown: string, path: string): string {
-  let md = markdown;
-
-  // 1. Images: ![[image.png|Alt text]]
-  md = md.replace(
-    /!\[\[([^\[\]]+?)(?:\|([^\[\]]+?))?\]\]/g,
-    (_, target, altText) => {
-      const alt = (altText || target).trim();
-      return `![${alt}](https://uobd8cw20y5uorxw.public.blob.vercel-storage.com/vault${parent(path)}/assets/${target})`;
-    }
-  );
-
-  // 2. Heading links: [[#My Heading|Alias]]
-  md = md.replace(
-    /\[\[#([^\[\]]+?)(?:\|([^\[\]]+?))?\]\]/g,
-    (_, heading, alias) => {
-      const text = (alias || heading).trim();
-      const slug = heading
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^a-z0-9\-]/g, '');
-      return `[${text}](#${slug})`;
-    }
-  );
-
-  // 3. Page links: [[My Page|Alias]]
-  md = md.replace(
-    /\[\[([^#][^\[\]]+?)(?:\|([^\[\]]+?))?\]\]/g,
-    (_, page, alias) => {
-      const text = (alias || page).trim();
-      return `[${text}](/wiki/${encodeURIComponent(page.trim())})`;
-    }
-  );
-
-  return md;
-}
-
 function FormattedMarkdown(props) {
   return (
     <ReactMarkdown
@@ -61,7 +23,7 @@ function FormattedMarkdown(props) {
         a: ({ ...props }) => <a className="md-link" {...props} />,
         img: ({ src, alt, title, ...props }) => (
           <figure>
-            <img src={src} alt={alt} title={title} {...props} />
+            <img src={src} alt={alt} title={title} className="max-w-full" {...props} />
             <span className="alt-text">{alt}</span>
           </figure>
         )
@@ -70,7 +32,7 @@ function FormattedMarkdown(props) {
       remarkPlugins={[remarkFrontmatter, remarkMath, remarkGFM, remarkCallout]}
       rehypePlugins={[[rehypeExtendedTable, { mergeTo: 'left' }], rehypeSlug, rehypeRaw, rehypeKatex]}
     >
-      {convertObsidianLinks(props.children, props.path)}
+      {props.children}
     </ReactMarkdown>
   );
 }
@@ -139,8 +101,8 @@ export default function MyRouteComponent({ params }) {
             <div className="tags">{frontMatter?.tags?.sort().map(tag => <Tag name={tag} key={tag} />)}</div>
           </div>
           <div className="content">
-            <FormattedMarkdown path={path} remarkPlugins={[remarkFrontmatter]}>
-              {content}
+            <FormattedMarkdown remarkPlugins={[remarkFrontmatter]}>
+              {content} 
             </FormattedMarkdown>
           </div>
         </div>

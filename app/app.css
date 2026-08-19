@@ -24,7 +24,7 @@ math, math * {
   font-family: serif !important;
 }
 
-.md-link, .link {
+.md-link, .link, .wiki-link {
   text-decoration: underline;
 }
 
@@ -354,11 +354,24 @@ button {
 }
 
 table {
-  border-spacing: 50px 10px;
-  margin-left: -50px;         /* cancels spacing on the very left */
+  border-collapse: collapse;
+  margin-left: 0;         /* cancels spacing on the very left */
+}
+
+table, th, td { 
+  border: 1px solid #d5d6d8; 
+  padding: 10px
 }
 
 .box {
   display: inline-block;
-  padding: 0 5px;
+  padding: 0 7px 0 5px;
+}
+
+img {
+  width: 100%
+}
+
+.alt-text {
+  color: #9da0a4
 }

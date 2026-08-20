@@ -384,5 +384,5 @@ img {
 }
 
 figure {
-  margin: 5% 0
+  margin: min(10%, 30px) 0
 }

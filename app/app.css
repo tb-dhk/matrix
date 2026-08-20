@@ -56,7 +56,8 @@ math, math * {
 
 .body > div {
   padding: 25px;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   height: 100%
 }
 
@@ -351,6 +352,10 @@ button {
 
 [data-callout-type="note"] {
   background-color: #292e50
+}
+
+.table-wrapper {
+  overflow-x: scroll
 }
 
 table {

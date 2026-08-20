@@ -26,7 +26,8 @@ function FormattedMarkdown(props) {
             <img src={src} alt={alt} title={title} {...props} />
             <span className="alt-text">{alt}</span>
           </figure>
-        )
+        ),
+        table: ({ ...props }) => <div className="table-wrapper"><table {...props}></table></div>
       }}
       // ✅ ONLY the middle transforms – NO parse/rehype/stringify
       remarkPlugins={[remarkFrontmatter, remarkMath, remarkGFM, remarkCallout]}

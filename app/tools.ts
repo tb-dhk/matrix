@@ -13,17 +13,78 @@ export function normalizePath(path) {
   return "/" + cleaned;
 }
 
-function rewriteImageLinks(path, markdown) {
-  return markdown.replace(
-    /!\[([^\]]*)\]\((?!https?:\/\/)([^)]+)\)/g,
-    (_, alt, filename) => {
-      const imageExtensions = /\.(png|jpg|jpeg|gif|webp|svg)$/i;
-      if (!imageExtensions.test(filename)) return _; // skip if not an image
+// utils/async-utils.js
+export async function replaceAsync(str, regex, asyncReplacer) {
+  const matches = [...str.matchAll(regex)];
+  if (matches.length === 0) return str;
 
-      const fullURL = `${VERCEL_BLOB_BASE_URL}${parent(path)}/assets/${filename}`;
-      return `<img src="${fullURL}" alt="${alt}" style="max-width: 100%;" />\n\n`;
+  const replacements = await Promise.all(
+    matches.map(match => asyncReplacer(...match))
+  );
+
+  let result = '';
+  let lastIndex = 0;
+  matches.forEach((match, i) => {
+    const start = match.index;
+    const end = start + match[0].length;
+    result += str.slice(lastIndex, start) + replacements[i];
+    lastIndex = end;
+  });
+  result += str.slice(lastIndex);
+  return result;
+}
+
+async function rewriteLinks(path, markdown) {
+  let md = markdown
+
+  // ![[image.png|alt text]]
+  md = md.replace(
+    /!\[\[([^\[\]]+?)(?:\|([^\[\]]+?))?\]\]/g,
+    (_, target, altText) => {
+      const alt = (altText || target).trim();
+      return `![${alt}](${target})`;
     }
   );
+
+  // [[#my heading|alias]]
+  md = md.replace(
+    /\[\[#([^\[\]]+?)(?:\|([^\[\]]+?))?\]\]/g,
+    (_, heading, alias) => {
+      const text = (alias || heading).trim();
+      const slug = heading
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9\-]/g, '');
+      return `[${text}](#${slug})`;
+    }
+  );
+
+  // [[my page|alias]]
+  md = md.replace(
+    /\[\[([^#][^\[\]]+?)(?:\|([^\[\]]+?))?\]\]/g,
+    (_, page, alias) => {
+      const text = (alias || page).trim();
+      return `[${text}](/blog/${encodeURIComponent(page.trim())})`;
+    }
+  );
+
+  md = await replaceAsync(
+    md,
+    /!\[([^\]]*)\]\((?!https?:\/\/)([^)]+)\)/g,
+    async (_, alt, filename) => {
+      const imageExtensions = /\.(png|jpg|jpeg|gif|webp|svg)$/i;
+      if (!imageExtensions.test(filename)) return _; // skip
+
+      // Get the actual blob URL from the manifest
+      const fullPath = `${parent(path)}/assets/${filename}`.slice(1);
+      const blobUrl = await getFileLink(fullPath); // looks up the manifest
+
+      return `<img src="${VERCEL_BLOB_BASE_URL}/${encodeURIComponent(blobUrl)}" alt="${alt}" style="max-width: 100%;" />`;
+    }
+  );
+
+  return md
 }
 
 export async function fetchFile(path) {
@@ -33,10 +94,10 @@ export async function fetchFile(path) {
   if (!response.ok) {
     throw new Error(`Failed to fetch file ${path}: ${response.status}`);
   }
-  return rewriteImageLinks(path, await response.text());
+  return await rewriteLinks(path, await response.text());
 }
 
-async function getLatestCommit() {
+export async function getLatestCommit() {
   const url = `https://api.github.com/repos/tb-dhk/matrix-vault/commits?per_page=1&author=tb-dhk`;
   const headers = {
     'Accept': 'application/vnd.github.v3+json',
@@ -51,9 +112,13 @@ async function getLatestCommit() {
   return data[0].sha
 }
 
-export async function getFileContents(path) {
+export async function getFileLink(path) {
   const manifest = JSON.parse(await fetchFile(`manifest.${await getLatestCommit()}.json`)) 
-  return fetchFile(manifest[`${path}`])
+  return manifest[path]
+}
+
+export async function getFileContents(path) {
+  return fetchFile(await getFileLink(path))
 }
 
 export async function getBuildJSON() {

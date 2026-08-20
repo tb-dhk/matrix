@@ -10,46 +10,8 @@ import { rehypeExtendedTable } from 'rehype-extended-table';
 import remarkGFM from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 
-import { VERCEL_BLOB_BASE_URL, getFileContents, getConfigJSON, parent, getFrontMatter, normalizePath } from "./tools"
+import { getFileContents, getConfigJSON, parent, getFrontMatter, normalizePath } from "./tools"
 import { Navbar, Tag, Tree, Series, MetaTags } from "./components"
-
-export function convertObsidianLinks(markdown: string, path: string): string {
-  let md = markdown;
-
-  // 1. Images: ![[image.png|Alt text]]
-  md = md.replace(
-    /!\[\[([^\[\]]+?)(?:\|([^\[\]]+?))?\]\]/g,
-    (_, target, altText) => {
-      const alt = (altText || target).trim();
-      return `![${alt}](https://uobd8cw20y5uorxw.public.blob.vercel-storage.com/vault${parent(path)}/assets/${target})`;
-    }
-  );
-
-  // 2. Heading links: [[#My Heading|Alias]]
-  md = md.replace(
-    /\[\[#([^\[\]]+?)(?:\|([^\[\]]+?))?\]\]/g,
-    (_, heading, alias) => {
-      const text = (alias || heading).trim();
-      const slug = heading
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^a-z0-9\-]/g, '');
-      return `[${text}](#${slug})`;
-    }
-  );
-
-  // 3. Page links: [[My Page|Alias]]
-  md = md.replace(
-    /\[\[([^#][^\[\]]+?)(?:\|([^\[\]]+?))?\]\]/g,
-    (_, page, alias) => {
-      const text = (alias || page).trim();
-      return `[${text}](/wiki/${encodeURIComponent(page.trim())})`;
-    }
-  );
-
-  return md;
-}
 
 function FormattedMarkdown(props) {
   return (
@@ -70,7 +32,7 @@ function FormattedMarkdown(props) {
       remarkPlugins={[remarkFrontmatter, remarkMath, remarkGFM, remarkCallout]}
       rehypePlugins={[[rehypeExtendedTable, { mergeTo: 'left' }], rehypeSlug, rehypeRaw, rehypeKatex]}
     >
-      {convertObsidianLinks(props.children, props.path)}
+      {props.children}
     </ReactMarkdown>
   );
 }

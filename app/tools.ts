@@ -37,7 +37,7 @@ export async function fetchFile(path) {
 }
 
 async function getLatestCommit() {
-  const url = `https://api.github.com/repos/tb-dhk/matrix-vault/commits?per_page=1`;
+  const url = `https://api.github.com/repos/tb-dhk/matrix-vault/commits?per_page=1&author=tb-dhk`;
   const headers = {
     'Accept': 'application/vnd.github.v3+json',
   };
@@ -53,7 +53,7 @@ async function getLatestCommit() {
 
 export async function getFileContents(path) {
   const manifest = JSON.parse(await fetchFile(`manifest.${await getLatestCommit()}.json`)) 
-  return fetchFile(manifest[`./${path}`])
+  return fetchFile(manifest[`${path}`])
 }
 
 export async function getBuildJSON() {

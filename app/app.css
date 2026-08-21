@@ -341,7 +341,7 @@ button {
 }
 
 [data-callout] {
-  padding: 25px;
+  padding: 25px min(max(5%, 20px), 30px);
   border: 2px solid #414564;
   border-radius: 25px;
   margin: 25px 0

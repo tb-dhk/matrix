@@ -343,12 +343,16 @@ button {
 [data-callout] {
   padding: 25px;
   border: 2px solid #414564;
-  border-radius: 20px;
-  margin: 22.5px 0
+  border-radius: 25px;
+  margin: 25px 0
 }
 
 [data-callout-title] {
   font-weight: bold
+}
+
+[data-callout-body] > *:last-child {
+  margin-bottom: 5px;
 }
 
 .table-wrapper {
@@ -381,4 +385,8 @@ img {
 
 figure {
   margin: min(10%, 30px) 0
+}
+
+p {
+  margin: 20px 0
 }

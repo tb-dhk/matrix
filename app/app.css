@@ -61,10 +61,11 @@ math, math * {
   height: 100%
 }
 
-@media (min-width: 850px) {
-  html {
-    font-size: clamp(17.5px, 3.5vw, 22.5px);
-  }
+html {
+  font-size: clamp(17.5px, 4vw, 22.5px);
+}
+
+@media (min-width: 1000px) {
   .left, .right {
     display: block;
     width: 15%;
@@ -102,10 +103,7 @@ math, math * {
   line-height: 1.4
 }
 
-@media (max-width: 849px) {
-  html {
-    font-size: clamp(20px, 4vw, 25px);
-  }
+@media (max-width: 999px) {
   .left, .right {
     display: none !important;
   }

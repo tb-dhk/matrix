@@ -50,12 +50,14 @@ async function rewriteLinks(path, markdown) {
   md = md.replace(
     /\[\[#([^\[\]]+?)(?:\|([^\[\]]+?))?\]\]/g,
     (_, heading, alias) => {
-      const text = (alias || heading).trim();
+      const text = (alias || heading)
+	.trim();
       const slug = heading
         .trim()
         .toLowerCase()
+        .replace(/<[^>]*>/g, '')
         .replace(/\s+/g, '-')
-        .replace(/[^a-z0-9\-]/g, '');
+        .replace(/[^a-z0-9\-]/g, '')
       return `[${text}](#${slug})`;
     }
   );

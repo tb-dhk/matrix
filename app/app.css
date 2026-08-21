@@ -343,15 +343,12 @@ button {
 [data-callout] {
   padding: 25px;
   border: 2px solid #414564;
-  border-radius: 20px
+  border-radius: 20px;
+  margin: 22.5px 0
 }
 
 [data-callout-title] {
   font-weight: bold
-}
-
-[data-callout-type="note"] {
-  background-color: #292e50
 }
 
 .table-wrapper {
@@ -360,7 +357,6 @@ button {
 
 table {
   border-collapse: collapse;
-  margin-left: 0;         /* cancels spacing on the very left */
 }
 
 table, th, td { 

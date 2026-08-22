@@ -17,7 +17,7 @@ export function rewriteLinks(path, markdown) {
     /!\[\[([^\[\]]+?)(?:\|([^\[\]]+?))?\]\]/g,
     (_, target, altText) => {
       const alt = (altText || target).trim();
-      return `![${alt}](${target})`;
+      return `![${alt}](/vault/${parent(path)}/assets/${target})`;
     }
   );
 

@@ -38,7 +38,7 @@ export default function SearchPage({ params }) {
               .filter(([, post]) => matchesQuery(post))
               .sort(([,a], [,b]) => new Date(b.date) - new Date(a.date))
               .map(([k, v]) => (
-                <a href={"/blog" + k.replace(/\.md$/, "")}>
+                <a href={"/blog/" + k.replace(/\.md$/, "")}>
                   <div
                     key={k}
                     className="card"

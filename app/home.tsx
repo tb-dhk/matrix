@@ -4,7 +4,7 @@ import {
   parent,
   seriesLastUpdated, wordFromSecond
 } from "./tools"
-import { Tag, Navbar, MetaTags } from "./components"
+import { Card, Tag, Navbar, MetaTags } from "./components"
 
 export default function MyRouteComponent() {  
   const [content, setContent] = useState({
@@ -87,21 +87,7 @@ export default function MyRouteComponent() {
           <div className="label">pinned</div>
           <div className="cards" id="pinned">
             {Object.entries(content.pinned).map(([i, obj]) => (
-              <a href={"/blog/"+i.replace(/\.md$/, '')}>
-                <div className="card" key={i}>
-                  <div className="card-title">{obj.title}</div>
-                  <div className="small">{obj.date}</div>
-                  <div className="tags">{obj.tags.map(tag => <Tag name={tag} key={tag} />)}</div>
-                  <div>{obj.description}</div>
-                  {config.series["/" + parent(i)] && <a href={"dir" + parent(i)}>
-                    <div 
-                      className="grey small"
-                    >
-                      <span className="underline">{config.series["/" + parent(i)].name}</span> #{obj.number}
-                    </div>
-                  </a>}
-                </div>
-              </a>
+              <Card path={i} data={obj} config={config} />
             ))}
           </div>  
         </div>
@@ -111,22 +97,9 @@ export default function MyRouteComponent() {
             {Object.entries(content.recent)
               .sort((a, b) => new Date(b[1].date) - new Date(a[1].date))
               .map(([i, obj]) => (
-              <a href={"/blog/"+i.replace(/\.md$/, '')}>
-                <div className="card" key={i}>
-                  <div className="card-title">{obj.title}</div>
-                  <div className="small">{obj.date}</div>
-                  <div className="tags">{obj.tags.map(tag => <Tag name={tag} key={tag} />)}</div>
-                  <div>{obj.description}</div>
-                  {config.series["/" + parent(i)] && <a href={"/dir" + parent(i)}>
-                    <div 
-                      className="grey small"
-                    >
-                      <span className="underline">{config.series["/" + parent(i)].name}</span> #{obj.number}
-                    </div>
-                  </a>}
-              </div>
-              </a>
-            ))}
+                <Card path={i} data={obj} config={config} />
+              ))
+            }
           </div>
         </div>
         <div>
@@ -146,9 +119,8 @@ export default function MyRouteComponent() {
                   <div className="small">
                     last updated: {
                       seriesLastUpdated(
-                        Object.entries(build)
-                          .filter(([id]) => parent(id) === i)
-                          .map(i => i[1])
+                        Object.values(build)
+                          .filter(v => v.type === "file")
                       ) || "never"
                     }
                   </div>

@@ -1,16 +1,23 @@
-import { useNavigate } from 'react-router'
 import { useState, useEffect } from "react";
-import { getBuildJSON } from "./tools"
-import { Navbar, Tag, Tags, MetaTags } from "./components"
+import { getBuildJSON, getConfigJSON } from "./tools"
+import { Navbar, Card, Tags, MetaTags } from "./components"
 
 export default function MyRouteComponent({ params }) {
-  const [build, setBuild] = useState(null);
+  const [build, setBuild] = useState({});
+  const [config, setConfig] = useState({});
 
   useEffect(() => {
     getBuildJSON()
       .then(buildData => setBuild(buildData))
       .catch(err => console.error(err));
+    getConfigJSON()
+      .then(configData => setConfig(configData))
+      .catch(err => console.error(err));
   }, [params]);
+
+  const results = Object.entries(build)
+    .filter(([, post]) => post.tags.includes(params["*"]))
+    .sort((a, b) => b.date - a.date)
 
   return (
     <div className="head">
@@ -20,24 +27,13 @@ export default function MyRouteComponent({ params }) {
         <Tags />
         <div className="browse">
           <div className="list-header">
-            <div className="title">{params["*"]}</div>
+            <div className="title">tag "{params["*"]}"</div>
           </div>
           <div className="blog-list">
-            {build && Object.entries(build)
-              .filter(([, post]) => post.tags.includes(params["*"]))
-              .sort((a, b) => b.date - a.date)
-              .map(([k, v]) => {
-                return (
-                  <a href={"/blog"+k.replace(/\.md$/, '')}>
-                    <div className="card" key={k}>
-                      <div className="card-title">{v.title}</div>
-                      <div>{v.date}</div>
-                      <div className="tags">{v.tags.map(tag => <Tag name={tag} key={tag} />)}</div>
-                      <div>{v.description}</div>
-                    </div>
-                  </a>
-                )
-              })}
+            {results.length ? results.map(([k, v]) => (
+                <Card path={k} data={v} config={config} />
+              ))
+            : "there are no results."}
           </div>
         </div>
         <div className="right">

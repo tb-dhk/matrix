@@ -17,7 +17,11 @@ a {
 html {
   background-color: #11173d;
   color: #d5d6d8;
-  overflow-x: hidden;
+  font-size: clamp(17.5px, 4vw, 22.5px);
+}
+
+body {
+  height: 100vh;
 }
 
 math, math * {
@@ -59,10 +63,6 @@ math, math * {
   overflow-y: scroll;
   overflow-x: hidden;
   height: 100%
-}
-
-html {
-  font-size: clamp(17.5px, 4vw, 22.5px);
 }
 
 @media (min-width: 1000px) {
@@ -145,7 +145,7 @@ form > * {
 .browse, .post {
   display: flex;
   flex-direction: column;
-  margin: 0 auto
+  margin: 0 
 }
 
 .browse {
@@ -286,7 +286,7 @@ form > * {
   top: 0;
   background-color: #11173d; 
   position: sticky;
-  padding: 10px 0;
+  padding: 10px 0 25px 0;
   min-height: 50px
 }
 
@@ -387,4 +387,8 @@ figure {
 
 p {
   margin: 20px 0
+}
+
+::-webkit-scrollbar {
+  display: none
 }

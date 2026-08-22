@@ -6,7 +6,7 @@ import { Navbar, Tag, MetaTags } from "./components"
 export default function SearchPage({ params }) {
   const query = params["*"]?.toLowerCase() || "";
 
-  const [build, setBuild] = useState(null);
+  const [build, setBuild] = useState({});
 
   useEffect(() => {
     getBuildJSON()
@@ -24,9 +24,13 @@ export default function SearchPage({ params }) {
     );
   };
 
+  let results = Object.entries(build)
+    .filter(([, post]) => matchesQuery(post))
+    .sort(([,a], [,b]) => new Date(b.date) - new Date(a.date))
+
   return (
     <div className="head">
-      <MetaTags title={query} description={`search results for "${query}"`} />
+      <MetaTags title={`search results for "${query}"`} description={`search results for "${query}"`} />
       <Navbar />
       <div className="body">
         <div className="browse">
@@ -34,10 +38,7 @@ export default function SearchPage({ params }) {
             <div className="title">search results for "{query}"</div>
           </div>
           <div className="blog-list">
-            {build && Object.entries(build)
-              .filter(([, post]) => matchesQuery(post))
-              .sort(([,a], [,b]) => new Date(b.date) - new Date(a.date))
-              .map(([k, v]) => (
+            {results.length ? results.map(([k, v]) => (
                 <a href={"/blog/" + k.replace(/\.md$/, "")}>
                   <div
                     key={k}
@@ -51,7 +52,7 @@ export default function SearchPage({ params }) {
                     <div>{v.description}</div>
                   </div>
                 </a>
-              ))}
+              )) : "there are no results."}
           </div>
         </div>
         <div className="right"></div>

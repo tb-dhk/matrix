@@ -1,7 +1,7 @@
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { useState, useEffect } from "react";
 import { getDirectoryContents, getBuildJSON, getConfigJSON, seriesLastUpdated, normalizePath } from "./tools";
-import { Navbar, Tag, Tree, Series, MetaTags } from "./components";
+import { Navbar, Card, Tree, Series, MetaTags } from "./components";
 
 export default function MyRouteWrapper() {
   const params = useParams();
@@ -29,9 +29,9 @@ export function MyRouteComponent() {
         setDirectory(dirData);
         setBuild(buildData);
         setConfig(configData);
-        setFiles(Object.entries(dirData)
-          .filter(([, v]) => v.type === "file")
-          .sort((a, b) => (buildData[a[1].path].number ?? 0) - (buildData[b[1].path].number ?? 0)))
+        setFiles(Object.values(dirData)
+          .filter(v => v.type === "file")
+          .sort((a, b) => (buildData[a.path].number ?? 0) - (buildData[b.path].number ?? 0)))
         }
       )
       .catch(err => console.error(err))
@@ -50,13 +50,10 @@ export function MyRouteComponent() {
           <div className="list-header">
             {isSeries ? (
               <>
-                <div className="title">{config.series[path]?.name}</div>
-                <div className="description">{config.series[path]?.description}</div>
+                <div className="title">{config?.series[path]?.name}</div>
+                <div className="description">{config?.series[path]?.description}</div>
                 <div>last updated: {
-                  seriesLastUpdated(
-                    Object.entries(files)
-                      .map(i => i[1])
-                  ) || "never"
+                  seriesLastUpdated(files) || "never"
                 }</div>
               </>
             ) : (
@@ -65,26 +62,19 @@ export function MyRouteComponent() {
           </div>
           <div className="blog-list">
             {files.length > 0 ? (
-              files.map(([, v]) => {
+              files.map(v => {
                 const filePath = normalizePath(`${path}/${v.name}`)
                 const obj = build[filePath];
 
                 return (
-                  <a href={"/blog/" + filePath}>
-                    <div
-                      key={filePath}
-                      className="list-entry"
-                      style={{ gridTemplateColumns: isSeries ? "1fr 9fr" : "1fr" }}
-                    >
-                      {isSeries && <div className="number">#{obj.number}</div>}
-                      <div className="card">
-                        <div className="card-title">{obj.title}</div>
-                        <div>{obj.date}</div>
-                        <div className="tags">{obj.tags.map(tag => <Tag name={tag} key={tag} />)}</div>
-                        <div>{obj.description}</div>
-                      </div>
-                    </div>
-                  </a>
+                  <div
+                    key={filePath}
+                    className="list-entry"
+                    style={{ gridTemplateColumns: isSeries ? "1fr 9fr" : "1fr" }}
+                  >
+                    {isSeries && <div className="number">#{obj.number}</div>}
+                    <Card path={filePath} data={obj} config={config} hideSeries={isSeries} />
+                  </div>
                 );
               })
             ) : (

@@ -181,8 +181,8 @@ export function textToColor(text, lightness = 25) {
 export function seriesLastUpdated(seriesData) {
   let date = null
   seriesData.forEach(i => {
-    if (!date || i.date > date) {
-      date = i.date
+    if (!date || i.meta.date > date) {
+      date = i.meta.date
     }
   })
   return date

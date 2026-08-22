@@ -21,14 +21,14 @@ export function Tree(props) {
   let path = normalizePath(props.path) 
 
   useEffect(() => {
-    getDirectoryContents(props.path)
+    getDirectoryContents(path)
       .then(data => {
         setContents(data.sort((a, b) => a.name.localeCompare(b.name)))
         if (path !== "") {
           setContents(prev => [{name: "..", type: "folder"}, ...prev])
         }
       })
-  }, [props.path])
+  }, [path])
 
   return (
     <div className="left tree">
@@ -202,5 +202,29 @@ export function MetaTags(props) {
       <meta name="twitter:image" content="/large.png" />
       <meta name="twitter:image:alt" content="matrix." />
     </React.Fragment>
+  )
+}
+
+export function Card(props) {
+  const path = props.path
+  const data = props.data
+  return (
+    <a href={"/blog/" + path.replace(/\.md$/, '')}>
+      <div className="card" key={path}>
+        <div className="card-title">{data.title}</div>
+        <div className="small">{data.date}</div>
+        <div className="tags">{data.tags.map(tag => <Tag name={tag} key={tag} />)}</div>
+        <div>{data.description}</div>
+        {!props.hideSeries && props.config.series[parent(path)] && (
+          <a href={"/dir/" + parent(path)}>
+            <div 
+              className="grey small"
+            >
+              <span className="underline">{props.config.series[parent(path)].name}</span> #{data.number}
+            </div>
+          </a>
+        )}
+      </div>
+    </a>
   )
 }

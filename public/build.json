@@ -1,16 +1,5 @@
 {
-  "/404": {
-    "title": "?",
-    "date": "2008-01-15",
-    "tags": [
-      "matrix",
-      "origin"
-    ],
-    "number": 0,
-    "hide": false,
-    "description": "did you lose your way?"
-  },
-  "/help": {
+  "help": {
     "title": "where am i?",
     "date": "2008-01-15",
     "tags": [
@@ -21,18 +10,29 @@
     "hide": false,
     "description": "landing point"
   },
-  "/transit/melbourne": {
-    "title": "how does melbourne's metro work?",
-    "date": "2026-08-22",
+  "404": {
+    "title": "?",
+    "date": "2008-01-15",
     "tags": [
-      "metro",
-      "transit"
+      "matrix",
+      "origin"
     ],
     "number": 0,
     "hide": false,
-    "description": "a deep dive into victoria's passenger rail network"
+    "description": "did you lose your way?"
   },
-  "/development/dev diaries/matrix/matrix2": {
+  "development/dev diaries/matrix/matrix": {
+    "title": "matrix: dev diary",
+    "date": "2025-06-25",
+    "tags": [
+      "dev-diary",
+      "matrix"
+    ],
+    "number": 1,
+    "hide": false,
+    "description": "my first dev diary"
+  },
+  "development/dev diaries/matrix/matrix2": {
     "title": "how does matrix ACTUALLY work though",
     "description": "a sequel to the matrix dev diary",
     "date": "2025-07-08",
@@ -43,15 +43,15 @@
     "number": 2,
     "hide": false
   },
-  "/development/dev diaries/matrix/matrix": {
-    "title": "matrix: dev diary",
-    "date": "2025-06-25",
+  "transit/melbourne": {
+    "title": "how does melbourne's metro work?",
+    "date": "2026-08-22",
     "tags": [
-      "dev-diary",
-      "matrix"
+      "metro",
+      "transit"
     ],
-    "number": 1,
+    "number": 0,
     "hide": false,
-    "description": "my first dev diary"
+    "description": "a deep dive into victoria's passenger rail network"
   }
 }

@@ -273,7 +273,7 @@ form > * {
   gap: 5px
 }
 
-.series-row {
+.series {
   font-size: 1.25rem;
   column-gap: 20px;
 }

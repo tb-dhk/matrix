@@ -10,7 +10,7 @@ import { rehypeExtendedTable } from 'rehype-extended-table';
 import remarkGFM from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 
-import { getFileContents, getConfigJSON, parent, getFrontMatter, normalizePath } from "./tools"
+import { getFileContents, getConfigJSON, parent, getFrontMatter, normalizePath, rewriteLinks } from "./tools"
 import { Navbar, Tag, Tree, Series, MetaTags } from "./components"
 
 function FormattedMarkdown(props) {
@@ -33,7 +33,7 @@ function FormattedMarkdown(props) {
       remarkPlugins={[remarkFrontmatter, remarkMath, remarkGFM, remarkCallout]}
       rehypePlugins={[[rehypeExtendedTable, { mergeTo: 'left' }], rehypeSlug, rehypeRaw, rehypeKatex]}
     >
-      {props.children}
+      {rewriteLinks(props.path, props.children)}
     </ReactMarkdown>
   );
 }
@@ -47,7 +47,7 @@ export default function MyRouteComponent({ params }) {
 
   useEffect(() => {
     const path = normalizePath(params["*"])
-    getFileContents("vault" + path + ".md")
+    getFileContents("vault/" + path + ".md")
       .then(newContent => {
         setContent(newContent);
         setFrontMatter(getFrontMatter(newContent));

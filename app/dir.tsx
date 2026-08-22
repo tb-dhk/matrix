@@ -5,14 +5,14 @@ import { Navbar, Tag, Tree, Series, MetaTags } from "./components";
 
 export default function MyRouteWrapper() {
   const params = useParams();
-  const path = normalizePath(params["*"] || "/");
+  const path = normalizePath(params["*"]);
 
   return <MyRouteComponent key={path} />;
 }
 
 export function MyRouteComponent() {
   const params = useParams();
-  const path = "/" + (params["*"] || "");
+  const path = (params["*"] || "");
 
   const [directory, setDirectory] = useState(null);
   const [build, setBuild] = useState(null);
@@ -60,17 +60,17 @@ export function MyRouteComponent() {
                 }</div>
               </>
             ) : (
-              <div className="title">{path}</div>
+              <div className="title">/{path}</div>
             )}
           </div>
           <div className="blog-list">
             {files.length > 0 ? (
               files.map(([, v]) => {
-                const filePath = `${path}/${v.name}`.replace(/\.md$/, "").replace("//", "/");
+                const filePath = normalizePath(`${path}/${v.name}`)
                 const obj = build[filePath];
 
                 return (
-                  <a href={"/blog" + filePath}>
+                  <a href={"/blog/" + filePath}>
                     <div
                       key={filePath}
                       className="list-entry"

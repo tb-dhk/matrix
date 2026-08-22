@@ -24,7 +24,7 @@ export function Tree(props) {
     getDirectoryContents(props.path)
       .then(data => {
         setContents(data.sort((a, b) => a.name.localeCompare(b.name)))
-        if (path !== "/") {
+        if (path !== "") {
           setContents(prev => [{name: "..", type: "folder"}, ...prev])
         }
       })
@@ -32,16 +32,18 @@ export function Tree(props) {
 
   return (
     <div className="left tree">
-      <a href={"/dir" + path}>
+      <a href={"/dir/" + path}>
         <div 
           className="highlight"
-        >{path}</div>
+        >/{path}</div>
       </a>
       {contents && contents.map((i, idx) => {
         const branch = contents.length - 1 === idx ? "└──" : "├──"
-        let url = "/" + (i.type === "folder" ? "dir" : "blog") + path + (path === "/" ? "" : "/") + i.name
+	let url
         if (i.name === "..") {
-          url = "/dir" + parent(path)
+          url = "/dir/" + parent(path)
+        } else {
+          url = "/" + (i.type === "folder" ? "dir/" : "blog/") + normalizePath(`${path}/${i.name}`) 
         }
         return (
           <a href={url}>
@@ -105,17 +107,23 @@ export function Series (props) {
     .filter(([filepath]) => parent(filepath) === props.path)
     .sort((a, b) => a[1].number - b[1].number);
 
+  const name = config.series[props.path].name
+
   return (
-    <div className="right">
-      {files.map(([filepath, fileattrs]) => (
+    <div className="series right">
+      <a href={"/dir/" + props.path}>
         <div 
-          key={filepath} 
-          className="series-row"
+          className="highlight"
+        >{name}</div>
+      </a>
+      {files.map(([filepath, fileattrs]) => (
+        <a
+          href={"/blog/" + filepath} 
           style={{ display: "grid", gridTemplateColumns: "1fr 5fr" }}
         >
           <div>#{fileattrs.number}</div>
           <div className={filepath.split("/").pop() === props.current ? "highlight2" : ""}>{fileattrs.title}</div>
-        </div>
+        </a>
       ))}
     </div>
   );

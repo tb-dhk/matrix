@@ -1,12 +1,12 @@
 {
   "series": {
-    "/development/dev diaries/matrix": {
+    "development/dev diaries/matrix": {
       "name": "matrix dev diaries",
       "description": "dev diaries for this website!"
     }
   },
   "pinned": [
-    "/development/dev diaries/matrix/matrix",
-    "/help"
+    "transit/melbourne",
+    "development/dev diaries/matrix/matrix2"
   ]
 }

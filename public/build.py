@@ -39,8 +39,7 @@ def traverse_and_parse(root_folder):
                 if filename.endswith(".md"):
                     full_path = os.path.join(dirpath, filename)
                     relative_path = (
-                        "/"
-                        + os.path.relpath(full_path, root_folder).replace(
+                        os.path.relpath(full_path, root_folder).replace(
                             "\\", "/"
                         )[:-3]
                     )  # normalize path

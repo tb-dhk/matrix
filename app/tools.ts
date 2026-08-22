@@ -2,16 +2,14 @@ import SHA256 from "crypto-js/sha256";
 import YAML from 'yaml';
 
 export function normalizePath(path) {
-  if (!path || path.trim() === "") return "/";
-
-  // Remove all leading and trailing slashes
-  const cleaned = path.trim().replace(/^\/+|\/+$/g, "");
-
-  // Return with a single leading slash
-  return "/" + cleaned;
+  return path.trim().replace(/^\/+|\/+$/g, "");
 }
 
-async function rewriteLinks(path, markdown) {
+export function rewriteLinks(path, markdown) {
+  if (!markdown) {
+    return ""
+  }
+
   let md = markdown
 
   // ![[image.png|alt text]]
@@ -52,7 +50,7 @@ async function rewriteLinks(path, markdown) {
 }
 
 export async function getFileContents(path) {
-  return fetch("/"+path)
+  return fetch("/"+encodeURI(path))
     .then(response => response.text())
 }
 
@@ -64,8 +62,8 @@ export async function getConfigJSON() {
   return JSON.parse(await getFileContents(`config.json`))
 }
 
-export async function getDirectoryContents(directoryPath = '/') {
-  const prefix = directoryPath.endsWith('/') ? directoryPath : directoryPath + '/';
+export async function getDirectoryContents(directoryPath = '') {
+  const prefix = (directoryPath.endsWith('/') || !directoryPath) ? directoryPath : directoryPath + '/';
   const entriesMap = new Map();
 
   const buildJSON = await getBuildJSON()
@@ -73,11 +71,7 @@ export async function getDirectoryContents(directoryPath = '/') {
   for (const fullPath of Object.keys(buildJSON)) {
     if (fullPath.startsWith(prefix)) {
       let remainder = fullPath.slice(prefix.length);
-      // remove leading slash if present
-      if (remainder.startsWith('/')) remainder = remainder.slice(1);
-
       const nextSegment = remainder.split('/')[0].replace(".md$", "");
-      if (!nextSegment) continue; // skip empty
 
       if (!entriesMap.has(nextSegment)) {
         const isFolder = remainder.includes('/');
@@ -93,7 +87,6 @@ export async function getDirectoryContents(directoryPath = '/') {
           entriesMap.set(nextSegment, {
             name: nextSegment,
             type: 'file',
-            // placeholder for meta, to fill below
             meta: buildJSON[fullPath],
             path: fullPath, // keep path for fetching content
           });
@@ -108,7 +101,7 @@ export async function getDirectoryContents(directoryPath = '/') {
       if (entry.type === 'file') {
         entry.meta = {
           ...entry.meta,
-          content: await getFileContents(`vault${entry.path}.md`), // adjust path as needed
+          content: await getFileContents(`vault/${entry.path}.md`), // adjust path as needed
         };
       }
       return entry;
@@ -168,13 +161,11 @@ export function weightedPickList(weights, n) {
 }
 
 export function pathInSeries(path, series) {
-  return Object.keys(series)
-    .some(seriesPath => path.startsWith(seriesPath + "/"));
+  return Object.keys(series).includes("/" + parent(path))
 }
 
 export function parent(path) {
-  // remove trailing slash if present
-  return "/" + normalizePath(path).split("/").slice(1, -1).join("/");
+  return normalizePath(path).split("/").slice(0, -1).join("/");
 }
 
 export function textToColor(text, lightness = 25) {

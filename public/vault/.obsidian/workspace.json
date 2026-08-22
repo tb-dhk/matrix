@@ -1,0 +1,208 @@
+{
+  "main": {
+    "id": "5c3d199077a46bd0",
+    "type": "split",
+    "children": [
+      {
+        "id": "0923ef13a38c7c8c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "49e768c34b0485f2",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "970558e5594f8387",
+    "type": "split",
+    "children": [
+      {
+        "id": "a8a71823e6ec03f4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "97943aa80df57cd8",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "fb632448dcc17582",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "1524692e714045e4",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 308.3507995605469,
+    "collapsed": true
+  },
+  "right": {
+    "id": "b7c33f243a242912",
+    "type": "split",
+    "children": [
+      {
+        "id": "fe3af22140a19cd9",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e03d591c16e07ab9",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "school/general/i hate school.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "a1c6a8decde72429",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "school/general/i hate school.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "4c09880441ad9cbd",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "482fa4eb79ac6f7f",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "a8ef599f357f337a",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "school/general/i hate school.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
+      "templater-obsidian:Templater": false
+    }
+  },
+  "active": "49e768c34b0485f2",
+  "lastOpenFiles": [
+    "transit/melbourne.md",
+    "transit/assets/network.png",
+    "transit/assets/network.webp",
+    "development/dev diaries/matrix/matrix3.md",
+    "development/dev diaries/matrix/matrix.md",
+    "development/dev diaries/matrix/matrix2.md",
+    "school/general/hcpmo.md",
+    "transit/assets/srl.png",
+    "transit/assets/network.png",
+    "transit/assets/Screenshot 2026-08-18 at 02-22-24 victorian-train-network-map.pdf.png",
+    "transit/assets",
+    "transit/assets/mtm.png",
+    "Pasted image 20260818000732.png",
+    "templates/properties.md",
+    "transit/Untitled",
+    "transit"
+  ]
+}

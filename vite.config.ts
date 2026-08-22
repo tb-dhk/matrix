@@ -5,8 +5,9 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 export default defineConfig({
-  plugins: [tailwindcss(), reactRouter(), tsconfigPaths(), nodePolyfills({
-      include: ['assert'],
+  plugins: [
+    tailwindcss(), reactRouter(), tsconfigPaths(), nodePolyfills({
+      include: ['assert', 'path'],
     }),
   ],
 });

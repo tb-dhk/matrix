@@ -1,8 +1,6 @@
 import SHA256 from "crypto-js/sha256";
 import YAML from 'yaml';
 
-export const VERCEL_BLOB_BASE_URL = "https://uobd8cw20y5uorxw.public.blob.vercel-storage.com";
-
 export function normalizePath(path) {
   if (!path || path.trim() === "") return "/";
 
@@ -11,27 +9,6 @@ export function normalizePath(path) {
 
   // Return with a single leading slash
   return "/" + cleaned;
-}
-
-// utils/async-utils.js
-export async function replaceAsync(str, regex, asyncReplacer) {
-  const matches = [...str.matchAll(regex)];
-  if (matches.length === 0) return str;
-
-  const replacements = await Promise.all(
-    matches.map(match => asyncReplacer(...match))
-  );
-
-  let result = '';
-  let lastIndex = 0;
-  matches.forEach((match, i) => {
-    const start = match.index;
-    const end = start + match[0].length;
-    result += str.slice(lastIndex, start) + replacements[i];
-    lastIndex = end;
-  });
-  result += str.slice(lastIndex);
-  return result;
 }
 
 async function rewriteLinks(path, markdown) {
@@ -71,56 +48,12 @@ async function rewriteLinks(path, markdown) {
     }
   );
 
-  md = await replaceAsync(
-    md,
-    /!\[([^\]]*)\]\((?!https?:\/\/)([^)]+)\)/g,
-    async (_, alt, filename) => {
-      const imageExtensions = /\.(png|jpg|jpeg|gif|webp|svg)$/i;
-      if (!imageExtensions.test(filename)) return _; // skip
-
-      // Get the actual blob URL from the manifest
-      const fullPath = `${parent(path)}/assets/${filename}`.slice(1);
-      const blobUrl = await getFileLink(fullPath); // looks up the manifest
-
-      return `<img src="${VERCEL_BLOB_BASE_URL}/${encodeURIComponent(blobUrl)}" alt="${alt}" style="max-width: 100%;" />`;
-    }
-  );
-
   return md
 }
 
-export async function fetchFile(path) {
-  const url = `${VERCEL_BLOB_BASE_URL}/${encodeURIComponent(path)}`;
-
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch file ${path}: ${response.status}`);
-  }
-  return await rewriteLinks(path, await response.text());
-}
-
-export async function getLatestCommit() {
-  const url = `https://api.github.com/repos/tb-dhk/matrix-vault/commits?per_page=1&author=tb-dhk`;
-  const headers = {
-    'Accept': 'application/vnd.github.v3+json',
-  };
-
-  const response = await fetch(url, { headers });
-  if (!response.ok) {
-    throw new Error(`GitHub API error: ${response.status}`);
-  }
-
-  const data = await response.json();
-  return data[0].sha
-}
-
-export async function getFileLink(path) {
-  const manifest = JSON.parse(await fetchFile(`manifest.${await getLatestCommit()}.json`)) 
-  return manifest[path]
-}
-
 export async function getFileContents(path) {
-  return fetchFile(await getFileLink(path))
+  return fetch("/"+path)
+    .then(response => response.text())
 }
 
 export async function getBuildJSON() {

@@ -1,0 +1,9 @@
+{
+  "theme": "obsidian",
+  "cssTheme": "Catppuccin",
+  "textFontFamily": "Iosevka",
+  "monospaceFontFamily": "IBM Plex Mono",
+  "enabledCssSnippets": [
+    "highlight"
+  ]
+}

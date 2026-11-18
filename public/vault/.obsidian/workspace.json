@@ -11,10 +11,14 @@
             "id": "49e768c34b0485f2",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "thoughts/why?.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "why?"
             }
           }
         ]
@@ -188,6 +192,9 @@
   },
   "active": "49e768c34b0485f2",
   "lastOpenFiles": [
+    "thoughts/why?.md",
+    "thoughts/why?.md",
+    "templates/properties.md",
     "transit/melbourne.md",
     "transit/assets/network.png",
     "transit/assets/network.webp",
@@ -201,7 +208,6 @@
     "transit/assets",
     "transit/assets/mtm.png",
     "Pasted image 20260818000732.png",
-    "templates/properties.md",
     "transit/Untitled",
     "transit"
   ]

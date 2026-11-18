@@ -3,5 +3,6 @@
   "attachmentFolderPath": "./assets",
   "alwaysUpdateLinks": true,
   "vimMode": true,
-  "useMarkdownLinks": false
+  "useMarkdownLinks": false,
+  "trashOption": "none"
 }
